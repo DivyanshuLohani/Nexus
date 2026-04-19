@@ -92,4 +92,8 @@
       --shadow-ambient: 0 12px 32px rgb(0 0 0 / 0.28);
     };
   }
+
+  .container {
+    @apply bg-surface-highest border border-outline-variant rounded-xl p-6 mb-6;
+  }
 }

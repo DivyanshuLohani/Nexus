@@ -1,6 +1,6 @@
 "use server";
 import db from "../db/drizzle";
-import { linksTable, pagesTable } from "../db/schema";
+import { linksTable, pagesTable, user } from "../db/schema";
 import { eq, and } from "drizzle-orm";
 import { CreatePageInput, createPageSchema } from "../db/validation";
 import { nanoid } from "nanoid";
@@ -129,4 +129,40 @@ export async function updateLink(
     .returning();
 
   return updatedLink;
+}
+
+export async function getPublicPage(username: string, slug?: string) {
+  // 1. get user
+  const [foundUser] = await db
+    .select()
+    .from(user)
+    .where(eq(user.name, username));
+
+  if (!foundUser) return null;
+
+  // 2. get page
+  const pageQuery = slug
+    ? and(eq(pagesTable.userId, foundUser.id), eq(pagesTable.slug, slug))
+    : and(eq(pagesTable.userId, foundUser.id), eq(pagesTable.isDefault, true));
+
+  const rows = await db
+    .select({
+      page: pagesTable,
+      link: linksTable,
+    })
+    .from(pagesTable)
+    .leftJoin(linksTable, eq(linksTable.pageId, pagesTable.id))
+    .where(pageQuery);
+
+  if (!rows.length) return null;
+
+  const page = rows[0].page;
+
+  const links = rows.map((r) => r.link).filter((l) => l !== null);
+
+  return {
+    user: foundUser,
+    page,
+    links,
+  };
 }

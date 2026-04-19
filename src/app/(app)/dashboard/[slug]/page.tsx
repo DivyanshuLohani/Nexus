@@ -1,11 +1,10 @@
-import AddLink from '@/components/dashboard/add-link'
-import LinksList from '@/components/dashboard/links-list'
-import Preview from '@/components/dashboard/preview'
+import LinksList from '@/components/dashboard/links-list';
+import PageEditor from '@/components/dashboard/PageEditor';
+import Preview from '@/components/dashboard/preview';
 import { auth } from '@/lib/auth';
 import { getPageBySlug } from '@/lib/services/linkPage';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import React from 'react'
 
 export default async function Page(
 
@@ -47,12 +46,12 @@ export default async function Page(
 
             <div className='flex justify-around'>
                 <div className="left">
-                    <AddLink pageId={page.id} />
+                    <PageEditor page={page} />
                     <LinksList initialLinks={page.links} pageId={page.id} />
                 </div>
                 {/* Preview Component */}
                 <div className="right w-full">
-                    <Preview url="https://example.com" />
+                    <Preview url={`/u/${session.user.name}`} />
                 </div>
             </div>
         </main>

@@ -74,10 +74,8 @@ export default function LinksList({
     };
 
     return (
-        <div>
-            <h2 className="text-lg font-semibold mb-4">
-                Your Links
-            </h2>
+        <div className="container p-2">
+
 
             <div className="space-y-3">
                 {links.map((link) => (
