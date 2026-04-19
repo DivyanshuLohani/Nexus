@@ -6,8 +6,9 @@ import {
   boolean,
   index,
   uniqueIndex,
+  integer,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 
 export const user = pgTable("users", {
   id: text("id").primaryKey(),
@@ -136,9 +137,24 @@ export const linksTable = pgTable("links", {
   label: varchar({ length: 255 }).notNull(),
   url: varchar({ length: 2048 }).notNull(),
   icon: varchar({ length: 255 }),
+  order: integer("order").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const linksRelations = relations(linksTable, ({ one }) => ({
+  page: one(pagesTable, {
+    fields: [linksTable.pageId],
+    references: [pagesTable.id],
+  }),
+}));
+
+export type DbPage = InferSelectModel<typeof pagesTable>;
+export type DbLink = InferSelectModel<typeof linksTable>;
+
+export type PageWithLinks = DbPage & {
+  links: DbLink[];
+};

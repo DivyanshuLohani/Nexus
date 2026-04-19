@@ -9,7 +9,6 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-// ✅ Validation schema
 const schema = z.object({
     email: z.string().email("Invalid email"),
     password: z.string().min(8, "Minimum 8 characters"),
@@ -42,14 +41,15 @@ export default function Form() {
                     toast.success("Welcome back");
                     router.replace("/dashboard");
                 },
-                onError: (ctx) => {
-                    toast.error(ctx.error.message);
-                },
+                // onError: (ctx) => {
+                //     toast.error(ctx.error.message);
+                // },
             }
         );
 
         if (error) {
-            console.error(error);
+            console.log(error);
+            toast.error(error.message ?? "");
         }
     };
 
@@ -75,7 +75,7 @@ export default function Form() {
             <Button
                 variant="primary"
                 type="submit"
-                className="mt-6"
+                className="mt-6 w-full"
                 disabled={isSubmitting}
             >
                 {isSubmitting ? "Signing in..." : "Sign In →"}

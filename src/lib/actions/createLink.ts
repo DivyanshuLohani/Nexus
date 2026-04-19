@@ -8,6 +8,7 @@ export async function createLinkAction(
   pageId: string,
   label: string,
   url: string,
+  order: number,
 ) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -17,5 +18,5 @@ export async function createLinkAction(
     throw new Error("Unauthorized");
   }
 
-  return await createLink(session.user.id, pageId, label, url);
+  return await createLink(session.user.id, pageId, label, url, order);
 }

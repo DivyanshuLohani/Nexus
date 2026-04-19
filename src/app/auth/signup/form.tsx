@@ -60,7 +60,7 @@ export default function SignupForm() {
         );
 
         if (error) {
-            console.error(error);
+            toast.error(error.message ?? "");
         }
     };
 
@@ -121,7 +121,7 @@ export default function SignupForm() {
                 )}
             </div>
 
-            <Button variant="primary" type="submit" disabled={isSubmitting}>
+            <Button variant="primary" type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? "Creating..." : "Create Account →"}
             </Button>
         </form>

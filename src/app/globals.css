@@ -69,31 +69,29 @@
    :root inside the media query, which re-sets the CSS vars    */
 @layer base {
   [data-theme="dark"] {
-    --root: {
-      --color-surface: #111111;
-      --color-surface-low: #161616;
-      --color-surface-mid: #1c1c1c;
-      --color-surface-high: #242424;
-      --color-surface-highest: #2a2a2a;
-      --color-surface-lowest: #0a0a0a;
+    --color-surface: #111111;
+    --color-surface-low: #161616;
+    --color-surface-mid: #1c1c1c;
+    --color-surface-high: #242424;
+    --color-surface-highest: #2a2a2a;
+    --color-surface-lowest: #0a0a0a;
 
-      --color-inverse-surface: #f0f0f0;
-      --color-inverse-primary: #0e0e0e;
+    --color-inverse-surface: #f0f0f0;
+    --color-inverse-primary: #0e0e0e;
 
-      --color-on-surface: #e8e8e8;
-      --color-on-surface-variant: #9a9a9a;
-      --color-outline: #6a6a6a;
-      --color-outline-variant: rgb(80 80 80 / 0.25);
+    --color-on-surface: #e8e8e8;
+    --color-on-surface-variant: #9a9a9a;
+    --color-outline: #6a6a6a;
+    --color-outline-variant: rgb(80 80 80 / 0.25);
 
-      --color-secondary: #7c93b0;
-      --color-tertiary: #2bbfff;
-      --color-error: #c96b68;
+    --color-secondary: #7c93b0;
+    --color-tertiary: #2bbfff;
+    --color-error: #c96b68;
 
-      --shadow-ambient: 0 12px 32px rgb(0 0 0 / 0.28);
-    };
+    --shadow-ambient: 0 12px 32px rgb(0 0 0 / 0.28);
   }
 
   .container {
-    @apply bg-surface-highest border border-outline-variant rounded-xl p-6 mb-6;
+    @apply bg-surface-highest border border-outline-variant rounded-xl p-6 mb-6 text-on-surface;
   }
 }

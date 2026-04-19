@@ -27,8 +27,8 @@ export async function getPageBySlug(userId: string, slug: string) {
     })
     .from(pagesTable)
     .leftJoin(linksTable, eq(linksTable.pageId, pagesTable.id))
-    .where(and(eq(pagesTable.userId, userId), eq(pagesTable.slug, slug)));
-
+    .where(and(eq(pagesTable.userId, userId), eq(pagesTable.slug, slug)))
+    .orderBy(linksTable.order);
   if (!rows.length) return null;
 
   // 🧠 extract page once
@@ -80,6 +80,7 @@ export async function createLink(
   pageId: string,
   label: string,
   url: string,
+  order: number,
 ) {
   const page = await db
     .select({ id: pagesTable.id })
@@ -98,6 +99,7 @@ export async function createLink(
       pageId,
       label,
       url,
+      order,
     })
     .returning();
 
@@ -152,8 +154,8 @@ export async function getPublicPage(username: string, slug?: string) {
     })
     .from(pagesTable)
     .leftJoin(linksTable, eq(linksTable.pageId, pagesTable.id))
-    .where(pageQuery);
-
+    .where(pageQuery)
+    .orderBy(linksTable.order);
   if (!rows.length) return null;
 
   const page = rows[0].page;

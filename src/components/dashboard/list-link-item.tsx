@@ -5,23 +5,23 @@ import { Trash2, GripVertical, Check } from "lucide-react";
 import { deleteLinkAction } from "@/lib/actions/deleteLink";
 import { updateLinkAction } from "@/lib/actions/updateLink";
 import toast from "react-hot-toast";
+import { type DbLink } from "@/lib/db/schema";
 
-interface Link {
-    id: string;
-    label: string;
-    url: string;
-}
+type Link = DbLink
 
 interface Props {
     link: Link;
     onDelete: (id: string) => void;
     onUpdate: (link: Link) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dragHandleProps?: any;
 }
 
 export default function ListLinkItem({
     link,
     onDelete,
     onUpdate,
+    dragHandleProps,
 }: Props) {
     const [label, setLabel] = useState(link.label);
     const [url, setUrl] = useState(link.url);
@@ -29,6 +29,13 @@ export default function ListLinkItem({
     const [saving, setSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [edit, setEdit] = useState(false);
+
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if (label !== link.label || url !== link.url) {
@@ -81,10 +88,14 @@ export default function ListLinkItem({
     return (
         <div className="bg-surface-low border border-outline-variant p-4 rounded-xl flex items-center gap-4">
             {/* drag */}
-            <GripVertical size={18} className="text-outline" />
+            <GripVertical
+                size={18}
+                className="text-outline cursor-grab"
+                {...(mounted ? dragHandleProps : {})}
+            />
 
             {/* inputs */}
-            <div className="flex-1 space-y-1">
+            <div className="flex-1 space-y-1 text-on-surface">
                 <input
                     value={label}
                     onChange={(e) => setLabel(e.target.value)}
@@ -114,6 +125,7 @@ export default function ListLinkItem({
       transition
       ${edit ? "opacity-100" : "opacity-0 pointer-events-none"}
       hover:bg-surface-high
+      text-on-surface
     `}
                 >
                     <Check size={16} />
@@ -128,6 +140,7 @@ export default function ListLinkItem({
       text-text-secondary
       transition
       hover:text-red-500 hover:bg-surface-high
+      text-on-surface
     "
                 >
                     <Trash2 size={16} />
