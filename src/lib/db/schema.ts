@@ -1,18 +1,17 @@
 import {
   pgTable,
-  uuid,
   varchar,
   text,
   timestamp,
   boolean,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const user = pgTable("users", {
-  id: uuid().primaryKey().defaultRandom(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
-  username: varchar({ length: 255 }).notNull().unique(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
@@ -102,27 +101,44 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 // Pages table
-export const pagesTable = pgTable("pages", {
-  id: uuid().primaryKey().defaultRandom(),
-  userId: uuid()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  title: varchar({ length: 255 }).notNull(),
-  subtitle: varchar({ length: 1024 }).default(""),
-  slug: varchar({ length: 255 }).notNull().unique(),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
-});
+export const pagesTable = pgTable(
+  "pages",
+  {
+    id: text().primaryKey(),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    title: varchar({ length: 255 }).notNull(),
+    subtitle: varchar({ length: 1024 }).default(""),
+    slug: varchar({ length: 255 }).notNull(),
+    isDefault: boolean("is_default").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => ({
+    userSlugIdx: uniqueIndex("user_slug_idx").on(table.userId, table.slug),
+  }),
+);
+
+export const pagesRelations = relations(pagesTable, ({ many }) => ({
+  links: many(linksTable),
+}));
 
 // Links table
 export const linksTable = pgTable("links", {
-  id: uuid().primaryKey().defaultRandom(),
-  pageId: uuid()
+  id: text().primaryKey(),
+  pageId: text()
     .notNull()
     .references(() => pagesTable.id, { onDelete: "cascade" }),
   label: varchar({ length: 255 }).notNull(),
   url: varchar({ length: 2048 }).notNull(),
   icon: varchar({ length: 255 }),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });

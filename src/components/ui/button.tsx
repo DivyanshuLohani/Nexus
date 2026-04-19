@@ -2,8 +2,9 @@ interface ButtonProps {
     children: React.ReactNode;
     variant?: "primary" | "secondary" | "tertiary";
     type?: "button" | "submit" | "reset";
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string;
+    disabled?: boolean;
 }
 
 export default function Button({
@@ -12,8 +13,9 @@ export default function Button({
     type = "button",
     onClick,
     className,
+    disabled,
 }: ButtonProps) {
-    const base = "w-full py-3 text-body-sm font-medium rounded-sharp border-none cursor-pointer transition-opacity duration-150";
+    const base = "py-3 text-body-sm font-medium rounded-sharp border-none cursor-pointer transition-opacity duration-150";
 
     const variants = {
         primary: "bg-inverse-surface text-inverse-primary hover:opacity-85",
@@ -22,7 +24,7 @@ export default function Button({
     };
 
     return (
-        <button type={type} onClick={onClick} className={`${base} ${variants[variant]} ${className ?? ""}`}>
+        <button type={type} onClick={onClick} disabled={disabled} className={`${base} ${variants[variant]} ${className ?? ""}`}>
             {children}
         </button>
     );
