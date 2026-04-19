@@ -113,6 +113,8 @@ export const pagesTable = pgTable(
     subtitle: varchar({ length: 1024 }).default(""),
     slug: varchar({ length: 255 }).notNull(),
     image: text("image"),
+    background: text("background").default("#0a0a0a"),
+    textColor: text("text_color").default("#ffffff"),
     isDefault: boolean("is_default").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
@@ -153,6 +155,7 @@ export const linksRelations = relations(linksTable, ({ one }) => ({
   }),
 }));
 
+export type DbUser = InferSelectModel<typeof user>;
 export type DbPage = InferSelectModel<typeof pagesTable>;
 export type DbLink = InferSelectModel<typeof linksTable>;
 

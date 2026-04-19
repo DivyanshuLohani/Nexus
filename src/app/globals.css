@@ -92,7 +92,7 @@
   }
 
   .container {
-    @apply bg-surface-highest border border-outline-variant rounded-xl p-6 mb-6 text-on-surface;
+    @apply p-6 mb-6 text-on-surface;
   }
   /* Scroll bar css */
   ::-webkit-scrollbar {

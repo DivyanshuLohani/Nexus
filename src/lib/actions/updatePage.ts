@@ -72,3 +72,21 @@ export async function updatePageImageAction(
 
   return updated;
 }
+
+export async function updatePageAppearanceAction(
+  pageId: string,
+  background: string,
+  textColor: string,
+) {
+  const [updated] = await db
+    .update(pagesTable)
+    .set({
+      background,
+      textColor,
+      updatedAt: new Date(),
+    })
+    .where(eq(pagesTable.id, pageId))
+    .returning();
+
+  return updated;
+}

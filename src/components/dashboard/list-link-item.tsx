@@ -7,7 +7,7 @@ import { updateLinkAction } from "@/lib/actions/updateLink";
 import toast from "react-hot-toast";
 import { type DbLink } from "@/lib/db/schema";
 
-type Link = DbLink
+type Link = DbLink;
 
 interface Props {
     link: Link;
@@ -44,27 +44,21 @@ export default function ListLinkItem({
         } else {
             setEdit(false);
         }
-
-    }, [label, link.label, link.url, url])
-
+    }, [label, link.label, link.url, url]);
 
     const handleSave = async () => {
         if (!label || !url || !edit) return;
 
         try {
             setSaving(true);
-            const updated = (await toast.promise(
-                updateLinkAction(
-                    link.id,
-                    label,
-                    url
-                ),
+            const updated = await toast.promise(
+                updateLinkAction(link.id, label, url),
                 {
                     loading: "Saving...",
                     success: "Saved",
                     error: "Update failed",
-                }
-            ))
+                },
+            );
             onUpdate(updated);
         } catch {
             toast.error("Update failed");
@@ -86,7 +80,18 @@ export default function ListLinkItem({
     };
 
     return (
-        <div className="bg-surface-low border border-outline-variant p-4 rounded-xl flex items-center gap-4">
+        <div
+            className="
+  bg-surface-high/40
+  backdrop-blur-md
+  border border-white/10
+  rounded-xl
+  p-4
+  flex items-center gap-4
+  transition
+  hover:border-white/20
+"
+        >
             {/* drag */}
             <GripVertical
                 size={18}
