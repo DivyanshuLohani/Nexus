@@ -112,6 +112,7 @@ export const pagesTable = pgTable(
     title: varchar({ length: 255 }).notNull(),
     subtitle: varchar({ length: 1024 }).default(""),
     slug: varchar({ length: 255 }).notNull(),
+    image: text("image"),
     isDefault: boolean("is_default").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")

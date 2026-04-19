@@ -5,8 +5,8 @@ interface PreviewProps {
 
 export default function Preview({ url, refreshKey }: PreviewProps) {
     return (
-        <div className="flex justify-center items-center h-full">
-            <div className="w-[320px] h-160 rounded-4xl overflow-hidden shadow-xl border border-surface-low bg-inverse-surface">
+        <div className="flex justify-center items-center ">
+            <div className="w-[320px] aspect-9/16 rounded-4xl overflow-hidden shadow-xl border border-surface-low bg-inverse-surface">
                 <iframe
                     key={refreshKey}
                     src={url}

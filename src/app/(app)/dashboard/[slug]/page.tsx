@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     return (
         <main className="p-0">
             {/* top bar */}
-            <div className="flex justify-between sticky top-0 items-center mb-8 bg-surface-low p-4 rounded-xl border border-outline-variant">
+            <div className="flex justify-between sticky top-0 items-center bg-surface-low p-4 rounded-xl border border-outline-variant z-10">
                 <div className="flex items-center gap-4">
                     <button
                         // onClick={() => window.history.back()}

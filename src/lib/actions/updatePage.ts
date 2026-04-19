@@ -3,6 +3,7 @@
 import db from "@/lib/db/drizzle";
 import { pagesTable } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function updatePageAction(
   pageId: string,
@@ -14,6 +15,56 @@ export async function updatePageAction(
     .set({
       title,
       subtitle,
+      updatedAt: new Date(),
+    })
+    .where(eq(pagesTable.id, pageId))
+    .returning();
+
+  return updated;
+}
+
+export async function updatePageImageAction(
+  pageId: string,
+  formData: FormData,
+) {
+  const file = formData.get("file") as File;
+
+  if (!file) throw new Error("No file");
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Invalid file type");
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    throw new Error("Max size 2MB");
+  }
+
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  // 🔥 upload to cloudinary
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const upload = await new Promise<any>((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream(
+        {
+          folder: "linktree",
+          transformation: [
+            { width: 300, height: 300, crop: "fill", gravity: "face" },
+          ],
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        },
+      )
+      .end(buffer);
+  });
+
+  // ✅ save to DB
+  const [updated] = await db
+    .update(pagesTable)
+    .set({
+      image: upload.secure_url,
       updatedAt: new Date(),
     })
     .where(eq(pagesTable.id, pageId))

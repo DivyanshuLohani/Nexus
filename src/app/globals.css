@@ -94,4 +94,28 @@
   .container {
     @apply bg-surface-highest border border-outline-variant rounded-xl p-6 mb-6 text-on-surface;
   }
+  /* Scroll bar css */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-low);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: var(--radius-pill);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-outline);
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-outline-variant) var(--color-surface-low);
+  }
 }

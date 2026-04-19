@@ -6,6 +6,8 @@ interface Props {
         links: any[];
     };
 }
+import Image from "next/image";
+import Link from "next/link";
 
 export default function PublicPageView({ data }: Props) {
     return (
@@ -14,7 +16,19 @@ export default function PublicPageView({ data }: Props) {
 
                 {/* profile */}
                 <div className="mb-8">
-                    <div className="w-20 h-20 rounded-full bg-surface-high mx-auto mb-4 border border-outline-variant" />
+                    {/* Image */}
+                    {data.page.image && (
+                        <div className="w-24 h-24 mx-auto mb-4 rounded-xl overflow-hidden border border-outline-variant bg-surface-high rounded-full">
+                            <Image
+                                width={300}
+                                height={300}
+                                src={data.page.image}
+                                alt={data.page.title}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    )}
+
 
                     <h1 className="text-xl font-semibold">
                         {data.page.title}
@@ -49,6 +63,20 @@ export default function PublicPageView({ data }: Props) {
                     ))}
                 </div>
             </div>
+            <div className="fixed bottom-6 right-6">
+                <div className="bg-surface-high border border-outline-variant p-2 rounded-full shadow-lg">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-2 px-3 py-1 text-xs font-bold tracking-tighter uppercase"
+                    >
+                        <span className="bg-primary text-on-primary w-5 h-5 flex items-center justify-center rounded-md">
+                            L
+                        </span>
+                        LinkOne
+                    </Link>
+                </div>
+            </div>
+
         </div>
     );
 }

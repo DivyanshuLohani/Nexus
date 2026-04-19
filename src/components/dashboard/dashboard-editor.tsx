@@ -5,6 +5,7 @@ import PageEditor from "@/components/dashboard/PageEditor";
 import LinksList from "@/components/dashboard/links-list";
 import Preview from "@/components/dashboard/preview";
 import { PageWithLinks } from "@/lib/db/schema";
+import ProfileImageUploader from "./image-uploader";
 
 
 interface Props {
@@ -21,9 +22,14 @@ export default function DashboardEditor({ page, username }: Props) {
 
     return (
         <div className="flex justify-around">
-            <div className="left">
+            <div className="left max-h-[83vh] overflow-y-scroll">
                 <PageEditor
                     page={page}
+                    onUpdate={triggerPreviewRefresh}
+                />
+                <ProfileImageUploader
+                    pageId={page.id}
+                    currentImage={page.image}
                     onUpdate={triggerPreviewRefresh}
                 />
 
@@ -34,7 +40,7 @@ export default function DashboardEditor({ page, username }: Props) {
                 />
             </div>
 
-            <div className="right w-full">
+            <div className="right w-full max-h-[60vh] h-[50vh]">
                 <Preview
                     url={`/u/${username}`}
                     refreshKey={previewKey}
