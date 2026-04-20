@@ -47,7 +47,7 @@ export default function DashboardEditor({ page, username }: Props) {
                 />
             </div>
 
-            <div className="right w-full max-h-[60vh] h-[50vh]">
+            <div className="right w-full max-h-[60vh] h-[50vh] hidden md:block">
                 <Preview
                     url={`/u/${username}?preview=true`}
                     refreshKey={previewKey}

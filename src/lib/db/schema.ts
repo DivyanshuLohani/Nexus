@@ -155,9 +155,47 @@ export const linksRelations = relations(linksTable, ({ one }) => ({
   }),
 }));
 
+export const pageView = pgTable("page_views", {
+  id: text().primaryKey(),
+  pageId: text()
+    .notNull()
+    .references(() => pagesTable.id, { onDelete: "cascade" }),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  referer: text("referer"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const pageAnalytics = pgTable("page_analytics", {
+  id: text().primaryKey(),
+  pageId: text()
+    .notNull()
+    .references(() => pagesTable.id, { onDelete: "cascade" }),
+  views: integer("views").default(0).notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const pageViewRelations = relations(pageView, ({ one }) => ({
+  page: one(pagesTable, {
+    fields: [pageView.pageId],
+    references: [pagesTable.id],
+  }),
+}));
+
+export const pageAnalyticsRelations = relations(pageAnalytics, ({ one }) => ({
+  page: one(pagesTable, {
+    fields: [pageAnalytics.pageId],
+    references: [pagesTable.id],
+  }),
+}));
+
 export type DbUser = InferSelectModel<typeof user>;
 export type DbPage = InferSelectModel<typeof pagesTable>;
 export type DbLink = InferSelectModel<typeof linksTable>;
+export type DbPageView = InferSelectModel<typeof pageView>;
 
 export type PageWithLinks = DbPage & {
   links: DbLink[];

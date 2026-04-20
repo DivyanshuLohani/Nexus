@@ -1,5 +1,6 @@
 import DashboardEditor from "@/components/dashboard/dashboard-editor";
 import ThemeToggle from "@/components/ThemeToggle";
+import BackButton from "@/components/ui/back-button";
 import { auth } from "@/lib/auth";
 import { getPageBySlug } from "@/lib/services/linkPage";
 import { headers } from "next/headers";
@@ -22,12 +23,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             {/* top bar */}
             <div className="flex justify-between sticky top-0 items-center bg-surface-low p-4 rounded-xl border border-outline-variant z-10">
                 <div className="flex items-center gap-4">
-                    <button
-                        // onClick={() => window.history.back()}
-                        className="px-3 py-2 text-sm font-medium text-on-surface hover:bg-surface-high rounded-lg transition-colors"
-                    >
-                        ← Back
-                    </button>
+                    <BackButton backUrl="/dashboard" />
                     <div className="flex flex-col">
                         <h1 className="text-xl font-bold text-on-surface">
                             Editor
@@ -38,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="md:flex gap-3 hidden">
                     <a
                         href={`/u/${session.user.name}`}
                         target="_blank"

@@ -30,7 +30,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased `}
       data-theme="dark"
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col text-on-surface">
         <div>
           <Toaster position="top-right" />
         </div>
