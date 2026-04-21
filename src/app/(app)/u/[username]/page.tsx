@@ -3,35 +3,67 @@ import { addPageView } from "@/lib/services/analytics";
 import { getPublicPage } from "@/lib/services/linkPage";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ username: string }>;
-}) {
-  // Get the page data
+}): Promise<Metadata> {
   const { username } = await params;
+
   const data = await getPublicPage(username);
 
+  // 🔥 fallback (important)
   if (!data) {
-    return {};
+    return {
+      title: "Nexus",
+      description: "Minimal link-in-bio for creators.",
+    };
   }
 
+  const name = data.user.name;
+  const title = `@${name} | Nexus`;
+  const description =
+    data.page.subtitle ||
+    `Explore ${name}'s links, content, and presence in one place.`;
+
+  // 🔥 fallback image (important)
+  const image = data.page.image || `${process.env.APP_URL}/og/default.png`;
+
+  const url = `${process.env.APP_URL}/u/${name}`;
+
   return {
-    title: `@${data.user.name} | Nexus`,
-    description: `Check out ${data.user.name}'s links on Nexus`,
-    //  Image data
+    title,
+    description,
+
     openGraph: {
-      images: data.page.image ? [data.page.image] : [],
+      title,
+      description,
+      url,
+      siteName: "Nexus",
+      type: "profile",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${name}'s Nexus page`,
+        },
+      ],
     },
+
     twitter: {
       card: "summary_large_image",
-      images: data.page.image ? [data.page.image] : [],
-      title: `@${data.user.name} | Nexus`,
+      title,
+      description,
+      images: [image],
     },
+
+    // optional but nice
+    metadataBase: new URL(process.env.APP_URL!),
   };
 }
-
 export default async function UserPage({
   params,
   searchParams,

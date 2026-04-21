@@ -13,28 +13,73 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata() {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = "Nexus | Your Digital Identity, Simplified";
+  const description =
+    "Create a minimal, high-precision link-in-bio page with live editing, analytics, and complete design control.";
+
+  const url = process.env.APP_URL || "https://your-domain.com";
+
+  const image = `${url}/og/default.png`;
+
   return {
-    title: "Nexus | Your Digital Identity, Simplified",
-    description: "A monochromatic landscape for your professional presence. Create your surgical, high-precision link-in-bio profile.",
+    metadataBase: new URL(url),
+
+    title,
+    description,
+
+    applicationName: "Nexus",
+    keywords: [
+      "link in bio",
+      "linktree alternative",
+      "creator tools",
+      "personal website",
+      "bio links",
+    ],
+
+    authors: [{ name: "Divyanshu Lohani" }],
+    creator: "Divyanshu Lohani",
+
     openGraph: {
-      title: "Nexus | Your Digital Identity, Simplified",
-      description: "A monochromatic landscape for your professional presence.",
+      title,
+      description,
+      url,
+      siteName: "Nexus",
       type: "website",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: "Nexus — Link in Bio Builder",
+        },
+      ],
     },
+
     twitter: {
       card: "summary_large_image",
-      title: "Nexus | Your Digital Identity, Simplified",
-      description: "A monochromatic landscape for your professional presence.",
+      title,
+      description,
+      images: [image],
+      creator: "@yourhandle", // 🔥 replace
     },
+
     icons: {
-      icon: "/favicon.ico",
+      icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
+      apple: [{ url: "/apple-icon.png" }],
     },
+
     manifest: "/manifest.json",
+
+    // 🔥 subtle but important
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
