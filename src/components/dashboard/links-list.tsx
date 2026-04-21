@@ -136,14 +136,17 @@ export default function LinksList({
                     </SortableContext>
                 </DndContext>
 
-                {/* ➕ Add row */}
-                <button
+                <Button
+
                     onClick={handleAdd}
                     disabled={creating}
-                    className="w-full border border-dashed border-outline-variant rounded-xl p-4 text-sm text-text-secondary hover:bg-surface-low transition"
+                    className="w-full mt-4 flex justify-center"
+                    variant="secondary"
                 >
-                    + Add new link
-                </button>
+                    <Plus size={16} className="mr-2" />
+                    {creating ? "Adding..." : "Add New Link"}
+
+                </Button>
             </div>
         </div>
     );
@@ -156,6 +159,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { updateLinksOrderAction } from "@/lib/actions/updateLink";
 import { DbLink } from "@/lib/db/schema";
+import Button from "../ui/button";
+import { Plus } from "lucide-react";
 
 function SortableItem(props: { link: DbLink, onDelete: (id: string) => void, onUpdate: (link: DbLink) => void }) {
     const { link } = props;

@@ -1,5 +1,3 @@
-// BrandingBadge.tsx
-
 import Link from "next/link";
 
 export default function BrandingBadge() {
@@ -10,9 +8,16 @@ export default function BrandingBadge() {
                     href="/"
                     className="flex items-center gap-2 px-3 py-1 text-xs font-bold tracking-tighter uppercase"
                 >
-                    <span className="bg-primary text-on-primary w-5 h-5 flex items-center justify-center rounded-md">
-                        L
-                    </span>
+
+                    <div
+                        className="w-5 h-5"
+                        style={{
+                            backgroundColor: "currentColor",
+                            WebkitMask: "url(/icons/logo.svg) no-repeat center / contain",
+                            mask: "url(/icons/logo.svg) no-repeat center / contain",
+                        }}
+                    />
+
                     LinkOne
                 </Link>
             </div>

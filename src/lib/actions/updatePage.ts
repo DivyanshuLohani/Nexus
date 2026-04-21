@@ -1,7 +1,7 @@
 "use server";
 
 import db from "@/lib/db/drizzle";
-import { pagesTable } from "@/lib/db/schema";
+import { IconStyle, pagesTable } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -34,8 +34,8 @@ export async function updatePageImageAction(
     throw new Error("Invalid file type");
   }
 
-  if (file.size > 2 * 1024 * 1024) {
-    throw new Error("Max size 2MB");
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("Max size 5MB");
   }
 
   const bytes = await file.arrayBuffer();
@@ -77,6 +77,8 @@ export async function updatePageAppearanceAction(
   pageId: string,
   background: string,
   textColor: string,
+  iconStyle: IconStyle,
+  iconsOff: boolean = false,
 ) {
   const [updated] = await db
     .update(pagesTable)
@@ -84,6 +86,8 @@ export async function updatePageAppearanceAction(
       background,
       textColor,
       updatedAt: new Date(),
+      iconStyle,
+      iconsOff,
     })
     .where(eq(pagesTable.id, pageId))
     .returning();

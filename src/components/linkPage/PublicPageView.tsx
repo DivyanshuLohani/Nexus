@@ -7,20 +7,20 @@ import BrandingBadge from "./BrandingBadge";
 import type { DbLink, DbPage, DbUser } from "@/lib/db/schema";
 
 interface Props {
-    data: {
-        user: DbUser;
-        page: DbPage;
-        links: DbLink[];
-    };
-    preview: boolean;
+  data: {
+    user: DbUser;
+    page: DbPage;
+    links: DbLink[];
+  };
+  preview: boolean;
 }
 
 export default function PublicPageView({ data, preview }: Props) {
-    return (
-        <PageContainer page={data.page}>
-            <ProfileSection page={data.page} />
-            <LinksSection links={data.links} />
-            {!preview && <BrandingBadge />}
-        </PageContainer>
-    );
+  return (
+    <PageContainer page={data.page} preview={preview}>
+      <ProfileSection page={data.page} />
+      <LinksSection links={data.links} page={data.page} />
+      {!preview && <BrandingBadge />}
+    </PageContainer>
+  );
 }

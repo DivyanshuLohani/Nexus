@@ -3,6 +3,31 @@ import { addPageView } from "@/lib/services/analytics";
 import { getPublicPage } from "@/lib/services/linkPage";
 import { headers } from "next/headers";
 
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+    // Get the page data 
+    const { username } = await params;
+    const data = await getPublicPage(username);
+
+    if (!data) {
+        return {};
+    }
+
+    return {
+        title: `@${data.user.name} | Nexus`,
+        description: `Check out ${data.user.name}'s links on Nexus`,
+        //  Image data
+        openGraph: {
+            images: data.page.image ? [data.page.image] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            images: data.page.image ? [data.page.image] : [],
+            title: `@${data.user.name} | Nexus`,
+        },
+    };
+
+}
+
 
 export default async function UserPage({
     params,

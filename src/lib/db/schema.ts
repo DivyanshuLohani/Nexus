@@ -10,6 +10,11 @@ import {
 } from "drizzle-orm/pg-core";
 import { InferSelectModel, relations } from "drizzle-orm";
 
+export type IconStyle =
+  | "colored" // original brand colors
+  | "filled" // white icon on bg
+  | "mono"; // single color (artistic)
+
 export const user = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -115,6 +120,13 @@ export const pagesTable = pgTable(
     image: text("image"),
     background: text("background").default("#0a0a0a"),
     textColor: text("text_color").default("#ffffff"),
+
+    iconsOff: boolean("icons_off").default(false).notNull(),
+    iconStyle: text("icon_style")
+      .$type<IconStyle>()
+      .default("colored")
+      .notNull(),
+
     isDefault: boolean("is_default").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")

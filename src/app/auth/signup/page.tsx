@@ -1,7 +1,19 @@
 import Link from "next/link";
 import Form from "./form";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function SignupPage() {
+export default async function SignupPage() {
+    // Get session if session is there redirect to dashboard
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (session) {
+        redirect("/dashboard");
+    }
+
     return (
         <div className="w-full max-w-md px-4">
 
@@ -10,7 +22,7 @@ export default function SignupPage() {
                     <span className="text-inverse-primary text-sm">◈</span>
                 </div>
                 <h1 className="text-headline-sm font-bold text-on-surface">
-                    Create your LinkNest
+                    Create your Nexus
                 </h1>
                 <p className="text-body-sm text-on-surface-variant mt-2 leading-body">
                     Start your monochromatic curator.

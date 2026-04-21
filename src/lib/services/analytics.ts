@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { pagesTable, pageView } from "../db/schema";
 import db from "../db/drizzle";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 export async function addPageView(
   pageId: string,
@@ -18,12 +18,12 @@ export async function addPageView(
   });
 }
 
-export async function getAnalyticsData(slug: string) {
+export async function getAnalyticsData(slug: string, userId: string) {
   // get page
   const page = await db
     .select()
     .from(pagesTable)
-    .where(eq(pagesTable.slug, slug))
+    .where(and(eq(pagesTable.slug, slug), eq(pagesTable.userId, userId)))
     .limit(1);
 
   if (!page[0]) return null;

@@ -10,7 +10,7 @@ export default function LoginPage() {
                     <span className="text-inverse-primary text-sm">◈</span>
                 </div>
                 <h1 className="text-headline-sm font-bold text-on-surface">
-                    Sign in to LinkNest
+                    Sign in to Nexus
                 </h1>
                 <p className="text-body-sm text-on-surface-variant mt-2 leading-body">
                     Continue to your monochromatic curator.

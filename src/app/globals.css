@@ -4,7 +4,6 @@
   /* ─── Typography ─────────────────────────────────────────── */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  /* --text-* maps to font-size utilities: text-display, text-body-sm, etc. */
   --text-display: 2rem;
   --text-headline-lg: 1.75rem;
   --text-headline-sm: 1.25rem;
@@ -13,82 +12,99 @@
   --text-body-md: 0.9375rem;
   --text-body-sm: 0.75rem;
 
-  /* --font-weight-* maps to font-weight utilities: font-regular, font-medium, font-bold */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* --leading-* maps to line-height utilities: leading-body */
   --leading-body: 1.5;
 
-  /* ─── Colors ─────────────────────────────────────────────── */
-  /* --color-* maps to bg-*, text-*, border-*, etc.            */
+  /* ─── Colors (VIBRANT SYSTEM) ────────────────────────────── */
 
-  /* Surfaces — flat names, no nesting */
-  --color-surface: #f9f9f9;
-  --color-surface-low: #f3f3f3;
-  --color-surface-mid: #eeeeee;
-  --color-surface-high: #e8e8e8;
-  --color-surface-highest: #e2e2e2;
+  /* Surfaces — slightly tinted instead of gray */
+  --color-surface: #f8fafc;
+  --color-surface-low: #f1f5f9;
+  --color-surface-mid: #e2e8f0;
+  --color-surface-high: #cbd5f5;
+  --color-surface-highest: #c7d2fe;
   --color-surface-lowest: #ffffff;
 
+  /* Brand Primary (NEW) */
+  --color-primary: #4f46e5; /* Indigo-600 */
+  --color-primary-hover: #4338ca;
+  --color-primary-soft: #e0e7ff;
+
+  /* Accent (Linktree-style pop) */
+  --color-tertiary: #00d4ff; /* neon cyan */
+  --color-tertiary-soft: #ccf6ff;
+
+  /* Secondary (support tone) */
+  --color-secondary: #334155;
+
+  /* Text */
+  --color-on-surface: #0f172a; /* slate-900 */
+  --color-on-surface-variant: #475569;
+  --color-outline: #94a3b8;
+  --color-outline-variant: rgb(148 163 184 / 0.2);
+
+  /* Feedback */
+  --color-error: #ef4444;
+
   /* Inverse */
-  --color-inverse-surface: #0e0e0e;
+  --color-inverse-surface: #0b0f19;
   --color-inverse-primary: #ffffff;
 
-  /* Typography colors */
-  --color-on-surface: #323232;
-  --color-on-surface-variant: #5f5f5f;
-  --color-outline: #7b7b7b;
-  --color-outline-variant: rgb(178 178 178 / 0.2);
-
-  /* Accents */
-  --color-secondary: #475569;
-  --color-tertiary: #08b1ff;
-  --color-error: #9f403d;
-
   /* ─── Shadows ────────────────────────────────────────────── */
-  /* --shadow-* maps to shadow-* utilities */
-  --shadow-ambient: 0 12px 32px rgb(50 50 50 / 0.06);
+  --shadow-ambient: 0 10px 30px rgb(79 70 229 / 0.15);
 
   /* ─── Radius ─────────────────────────────────────────────── */
-  /* --radius-* maps to rounded-* utilities */
   --radius-sharp: 2px;
-  --radius-sm: 4px;
+  --radius-sm: 6px;
   --radius-pill: 9999px;
 
   /* ─── Spacing ────────────────────────────────────────────── */
-  /* --spacing-* maps to p-*, px-*, py-*, m-*, w-*, h-*, gap-*, etc. */
   --spacing-card-x: 1rem;
   --spacing-card-y: 1rem;
   --spacing-section-y: 2rem;
 }
 
-/* ─── Dark mode — override colors via :root in a media query ─
-   @theme cannot be nested, so dark token overrides live in
-   :root inside the media query, which re-sets the CSS vars    */
+/* ─── Dark Mode (Richer + More Neon Contrast) ───────────────── */
 @layer base {
   [data-theme="dark"] {
-    --color-surface: #111111;
-    --color-surface-low: #161616;
-    --color-surface-mid: #1c1c1c;
-    --color-surface-high: #242424;
-    --color-surface-highest: #2a2a2a;
-    --color-surface-lowest: #0a0a0a;
+    /* ─── Surfaces (TRUE NEUTRAL BLACK SCALE) ───────────────── */
+    --color-surface: #000000;
+    --color-surface-low: #0a0a0a;
+    --color-surface-mid: #111111;
+    --color-surface-high: #1a1a1a;
+    --color-surface-highest: #222222;
+    --color-surface-lowest: #000000;
 
-    --color-inverse-surface: #f0f0f0;
-    --color-inverse-primary: #0e0e0e;
+    /* ─── Brand Colors (pop against black) ─────────────────── */
+    --color-primary: #6366f1;
+    --color-primary-hover: #818cf8;
+    --color-primary-soft: rgba(99, 102, 241, 0.12);
 
-    --color-on-surface: #e8e8e8;
-    --color-on-surface-variant: #9a9a9a;
-    --color-outline: #6a6a6a;
-    --color-outline-variant: rgb(80 80 80 / 0.25);
+    --color-tertiary: #22d3ee;
+    --color-tertiary-soft: rgba(34, 211, 238, 0.12);
 
-    --color-secondary: #7c93b0;
-    --color-tertiary: #2bbfff;
-    --color-error: #c96b68;
+    --color-secondary: #a1a1aa;
 
-    --shadow-ambient: 0 12px 32px rgb(0 0 0 / 0.28);
+    /* ─── Text (clean hierarchy) ───────────────────────────── */
+    --color-on-surface: #f5f5f5;
+    --color-on-surface-variant: #a3a3a3;
+
+    /* ─── Borders (subtle, not glowing) ────────────────────── */
+    --color-outline: #2a2a2a;
+    --color-outline-variant: rgba(255, 255, 255, 0.08);
+
+    /* ─── Feedback ─────────────────────────────────────────── */
+    --color-error: #f87171;
+
+    /* ─── Inverse ──────────────────────────────────────────── */
+    --color-inverse-surface: #ffffff;
+    --color-inverse-primary: #000000;
+
+    /* ─── Shadows (deeper, realistic) ──────────────────────── */
+    --shadow-ambient: 0 12px 40px rgba(0, 0, 0, 0.6);
   }
 
   .container {
@@ -117,5 +133,18 @@
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-outline-variant) var(--color-surface-low);
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.25s ease-out;
   }
 }

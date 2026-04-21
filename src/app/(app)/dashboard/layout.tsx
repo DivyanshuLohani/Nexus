@@ -15,7 +15,7 @@ export default function DashboardLayout({
             </div>
 
             {/* Main */}
-            <main className="flex-1 p-4 pb-20 md:pb-4">
+            <main className="flex-1">
                 {children}
             </main>
 

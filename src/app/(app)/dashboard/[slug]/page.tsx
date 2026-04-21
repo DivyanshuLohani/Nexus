@@ -1,6 +1,5 @@
 import DashboardEditor from "@/components/dashboard/dashboard-editor";
 import ThemeToggle from "@/components/ThemeToggle";
-import BackButton from "@/components/ui/back-button";
 import { auth } from "@/lib/auth";
 import { getPageBySlug } from "@/lib/services/linkPage";
 import { headers } from "next/headers";
@@ -19,11 +18,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     if (!page) return notFound();
 
     return (
-        <main className="p-0">
-            {/* top bar */}
-            <div className="flex justify-between sticky top-0 items-center bg-surface-low p-4 rounded-xl border border-outline-variant z-10">
+        <main className="h-screen flex flex-col overflow-hidden">
+
+            {/* Header */}
+            <div className="flex justify-between items-center bg-surface-low p-4 border border-outline-variant z-10">
                 <div className="flex items-center gap-4">
-                    <BackButton backUrl="/dashboard" />
                     <div className="flex flex-col">
                         <h1 className="text-xl font-bold text-on-surface">
                             Editor
@@ -38,21 +37,22 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     <a
                         href={`/u/${session.user.name}`}
                         target="_blank"
-                        className="px-4 py-2 text-sm font-medium text-on-surface hover:bg-surface-high rounded-lg transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-on-surface hover:bg-surface-high rounded-lg"
                     >
                         View Live
                     </a>
                     <ThemeToggle />
                 </div>
-                {/* 🔥 Theme toggle here */}
-
             </div>
 
-            {/* 🔥 client wrapper */}
-            <DashboardEditor
-                page={page}
-                username={session.user.name}
-            />
+            {/* Content fills remaining height */}
+            <div className="flex-1 overflow-hidden">
+                <DashboardEditor
+                    page={page}
+                    username={session.user.name}
+                />
+            </div>
+
         </main>
     );
 }

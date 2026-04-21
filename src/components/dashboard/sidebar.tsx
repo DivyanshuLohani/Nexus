@@ -15,10 +15,10 @@ export default function Sidebar() {
     ];
 
     return (
-        <aside className="hidden h-full md:flex w-64 bg-surface-low p-4 flex-col justify-between">
+        <aside className="hidden h-full border-outline-variant border md:flex w-64 bg-surface-low p-4 flex-col justify-between">
             <div>
                 <div className="mb-8">
-                    <h2 className="text-lg font-semibold">LinkNest</h2>
+                    <h2 className="text-lg font-semibold">Nexus</h2>
                     <p className="text-xs text-text-secondary">
                         Editorial Tier
                     </p>
@@ -26,7 +26,11 @@ export default function Sidebar() {
 
                 <nav className="space-y-2">
                     {navItems.map((item) => {
-                        const active = pathname.startsWith(item.href);
+                        const isRoot = item.href === `/dashboard/${params.slug ?? ""}`;
+
+                        const active = isRoot
+                            ? pathname === item.href
+                            : pathname.startsWith(item.href);
 
                         return (
                             <Link
@@ -40,13 +44,12 @@ export default function Sidebar() {
                                 <item.icon size={18} />
                                 <span className="text-sm font-medium">{item.label}</span>
                             </Link>
-
                         );
                     })}
                 </nav>
             </div>
 
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
                 <button className="w-full bg-black text-white py-2 rounded">
                     Upgrade to Pro
                 </button>
@@ -55,7 +58,7 @@ export default function Sidebar() {
                     <div>Help</div>
                     <div>Logout</div>
                 </div>
-            </div>
+            </div> */}
         </aside>
     );
 }
