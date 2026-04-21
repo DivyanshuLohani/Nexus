@@ -71,14 +71,20 @@ export default function AppearanceEditor({
 
     const save = async () => {
       try {
-        await updatePageAppearanceAction(
-          pageId,
-          debouncedState.bg,
-          debouncedState.textColor,
-          debouncedState.iconStyle,
-          debouncedState.iconsOff,
+        toast.promise(
+          updatePageAppearanceAction(
+            pageId,
+            debouncedState.bg,
+            debouncedState.textColor,
+            debouncedState.iconStyle,
+            debouncedState.iconsOff,
+          ),
+          {
+            loading: "Saving appearance...",
+            success: "Appearance updated",
+            error: "Failed to update appearance",
+          },
         );
-
         onUpdate();
       } catch {
         toast.error("Update failed");
