@@ -38,6 +38,7 @@ export default function AppearanceEditor({
   const [iconStyle, setIconStyle] = useState(initialIconStyle);
   const [iconsOff, setIconsOff] = useState(initialIconsOff);
   const lastSaved = useRef<string>("");
+  const [mounted, setMounted] = useState(false);
 
   const debouncedState = useDebounce(
     {
@@ -62,6 +63,11 @@ export default function AppearanceEditor({
   };
 
   useEffect(() => {
+    if (!mounted) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMounted(true);
+      return;
+    }
     const payload = JSON.stringify(debouncedState);
 
     // 🚫 prevent duplicate saves
