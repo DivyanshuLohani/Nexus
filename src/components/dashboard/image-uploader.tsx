@@ -47,7 +47,7 @@ export default function ProfileImageUploader({
   };
 
   return (
-    <div className="flex justify-center mb-6">
+    <div className="flex justify-center">
       <div
         onClick={() => inputRef.current?.click()}
         className="relative w-full cursor-pointer group"

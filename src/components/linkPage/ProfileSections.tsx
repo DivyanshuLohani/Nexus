@@ -18,7 +18,7 @@ export default function ProfileSection({ page }: { page: DbPage }) {
         </div>
       )}
 
-      <h1 className="text-xl font-semibold">{page.title}</h1>
+      <h1 className="text-xl font-semibold">@{page.title}</h1>
 
       <p className="text-sm  mt-1 opacity-50">{page.subtitle}</p>
     </div>

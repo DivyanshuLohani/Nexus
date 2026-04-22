@@ -5,15 +5,10 @@ import { IconStyle, pagesTable } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
 
-export async function updatePageAction(
-  pageId: string,
-  title: string,
-  subtitle: string,
-) {
+export async function updatePageAction(pageId: string, subtitle: string) {
   const [updated] = await db
     .update(pagesTable)
     .set({
-      title,
       subtitle,
       updatedAt: new Date(),
     })

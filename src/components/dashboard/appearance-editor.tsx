@@ -122,14 +122,37 @@ export default function AppearanceEditor({
       </div>
 
       {/* custom */}
-      <input
-        value={bg}
-        onChange={(e) => setBg(e.target.value)}
-        onBlur={() => apply(bg)}
-        className="w-full mb-4 px-3 py-2 bg-surface-high rounded-md text-sm"
-        placeholder="#0a0a0a or gradient"
-      />
+      <div className="relative mb-4">
+        <input
+          value={bg}
+          onChange={(e) => setBg(e.target.value)}
+          onBlur={() => apply(bg)}
+          className="
+      w-full
+      px-3 py-2 pr-28
+      bg-surface-high
+      rounded-md
+      text-sm
+      outline-none
+    "
+          placeholder="#0a0a0a or gradient"
+        />
 
+        <a
+          href="https://cssgradient.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+      absolute right-2 top-1/2 -translate-y-1/2
+      text-xs
+      text-primary
+      hover:underline
+      whitespace-nowrap
+    "
+        >
+          Generate
+        </a>
+      </div>
       {/* text color */}
       <div className="flex gap-2">
         <button

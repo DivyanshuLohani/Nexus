@@ -23,7 +23,21 @@ export default function DashboardEditor({ page, username }: Props) {
     <div className="flex h-full">
       {/* LEFT PANEL (scrollable) */}
       <div className="w-full md:w-1/2 h-full overflow-y-auto bg-surface-low p-4 pb-10 space-y-6 ">
-        <PageEditor page={page} onUpdate={triggerPreviewRefresh} />
+        <div className="flex">
+          <ProfileImageUploader
+            pageId={page.id}
+            currentImage={page.image}
+            onUpdate={triggerPreviewRefresh}
+          />
+
+          <PageEditor page={page} onUpdate={triggerPreviewRefresh} />
+        </div>
+
+        <LinksList
+          initialLinks={page.links}
+          pageId={page.id}
+          onUpdate={triggerPreviewRefresh}
+        />
 
         <AppearanceEditor
           pageId={page.id}
@@ -31,18 +45,6 @@ export default function DashboardEditor({ page, username }: Props) {
           initialText={page.textColor ?? "#ffffff"}
           initialIconStyle={page.iconStyle ?? "colored"}
           initialIconsOff={page.iconsOff ?? false}
-          onUpdate={triggerPreviewRefresh}
-        />
-
-        <ProfileImageUploader
-          pageId={page.id}
-          currentImage={page.image}
-          onUpdate={triggerPreviewRefresh}
-        />
-
-        <LinksList
-          initialLinks={page.links}
-          pageId={page.id}
           onUpdate={triggerPreviewRefresh}
         />
       </div>
