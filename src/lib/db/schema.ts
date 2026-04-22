@@ -167,6 +167,21 @@ export const linksRelations = relations(linksTable, ({ one }) => ({
   }),
 }));
 
+export const pageSocials = pgTable("page_socials", {
+  id: text().primaryKey(),
+
+  pageId: text()
+    .notNull()
+    .references(() => pagesTable.id, { onDelete: "cascade" }),
+
+  platform: text("platform").notNull(), // instagram, twitter
+  url: text("url").notNull(),
+
+  order: integer("order").default(0).notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const pageView = pgTable("page_views", {
   id: text().primaryKey(),
   pageId: text()

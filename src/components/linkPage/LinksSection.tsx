@@ -2,6 +2,7 @@ import type { DbLink, DbPage } from "@/lib/db/schema";
 import { ExternalLink } from "lucide-react";
 import { getPlatformIcon } from "@/lib/getPlatform";
 import IconRenderer from "./IconRenderer";
+import { hexToRgba } from "@/lib/color";
 
 export default function LinksSection({
   links,
@@ -10,6 +11,11 @@ export default function LinksSection({
   links: DbLink[];
   page: DbPage;
 }) {
+  const borderColor = hexToRgba(page.textColor ?? "", 0.15);
+  const hoverBorder = hexToRgba(page.textColor ?? "", 0.35);
+  const hoverBg = hexToRgba(page.textColor ?? "", 0.08);
+  const glow = hexToRgba(page.textColor ?? "", 0.25);
+
   return (
     <div className="space-y-4">
       {links.map((link) => {
@@ -28,7 +34,6 @@ export default function LinksSection({
               bg-white/5
               backdrop-blur-xl
 
-              border border-white/10
               shadow-[0_8px_32px_rgba(0,0,0,0.3)]
 
               px-4 py-3
@@ -39,36 +44,45 @@ export default function LinksSection({
               hover:bg-white/10
               hover:border-white/20
             "
+            style={{
+              border: `1px solid ${borderColor}`,
+            }}
           >
             {/* highlight */}
             <div className="pointer-events-none absolute inset-0 rounded-xl bg-linear-to-b from-white/20 to-transparent opacity-10 group-hover:opacity-20 transition" />
 
             {/* glow */}
-            <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition bg-blue-500/10 blur-xl" />
+            <div
+              className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition blur-xl"
+              style={{ background: glow }}
+            />
+
+            <div
+              className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition"
+              style={{ background: hoverBg }}
+            />
 
             {/* content */}
             <div className="relative flex items-center justify-between">
               {/* LEFT */}
               <div
-                className={`flex items-center gap-3 ${!page.iconsOff ? "justify-self-center" : ""}`}
+                className={`flex items-center gap-3 ${page.iconsOff ? "justify-center w-full" : ""}`}
               >
                 {/* ICON */}
-
-                {!page.iconsOff ? (
-                  platform ? (
+                {!page.iconsOff &&
+                  (platform ? (
                     <IconRenderer
                       platform={platform}
                       style={page.iconStyle ?? "colored"}
                     />
                   ) : (
-                    <div className="w-5 h-5 flex items-center justify-center text-white/50">
+                    <div className="w-5 h-5 flex items-center justify-center opacity-50">
                       <ExternalLink size={14} />
                     </div>
-                  )
-                ) : null}
+                  ))}
 
                 {/* LABEL */}
-                <span className="text-sm font-medium text-white/90">
+                <span className="text-sm font-medium opacity-90">
                   {link.label}
                 </span>
               </div>
@@ -76,7 +90,7 @@ export default function LinksSection({
               {/* RIGHT */}
               <ExternalLink
                 size={12}
-                className="text-white/60 group-hover:text-white transition"
+                className="opacity-60 group-hover:opacity-100 transition"
               />
             </div>
           </a>
