@@ -3,14 +3,15 @@
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { updatePageImageAction } from "@/lib/actions/updatePage";
-import Button from "../ui/button";
 
 export default function ProfileImageUploader({
   pageId,
   currentImage,
+
   onUpdate,
 }: {
   pageId: string;
+
   currentImage?: string | null;
   onUpdate: (url: string) => void;
 }) {
@@ -47,14 +48,14 @@ export default function ProfileImageUploader({
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center ">
       <div
         onClick={() => inputRef.current?.click()}
-        className="relative w-full cursor-pointer group"
+        className="relative  cursor-pointer group"
       >
         <div
           className="
-          rounded-xl
+          rounded-full
           overflow-hidden
           bg-surface-high
           border border-outline-variant
@@ -73,8 +74,9 @@ export default function ProfileImageUploader({
         {/* overlay */}
         <div
           className="
+
           absolute inset-0
-          rounded-xl
+          rounded-full
           bg-black/40
           opacity-0 group-hover:opacity-100
           flex items-center justify-center

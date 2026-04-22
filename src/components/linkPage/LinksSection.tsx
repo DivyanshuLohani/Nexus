@@ -1,6 +1,6 @@
 import type { DbLink, DbPage } from "@/lib/db/schema";
 import { ExternalLink } from "lucide-react";
-import { getPlatformIcon } from "@/lib/getPlatform";
+import { getPlatformIcon } from "@/lib/platforms";
 import IconRenderer from "./IconRenderer";
 import { hexToRgba } from "@/lib/color";
 

@@ -4,12 +4,13 @@ import { useState } from "react";
 import PageEditor from "@/components/dashboard/PageEditor";
 import LinksList from "@/components/dashboard/links-list";
 import Preview from "@/components/dashboard/preview";
-import { PageWithLinks } from "@/lib/db/schema";
+import { PageWithLinksAndSocials } from "@/lib/db/schema";
 import ProfileImageUploader from "./image-uploader";
 import AppearanceEditor from "./appearance-editor";
+import SocialLinksSection from "./social-icons";
 
 interface Props {
-  page: PageWithLinks;
+  page: PageWithLinksAndSocials;
   username: string;
 }
 export default function DashboardEditor({ page, username }: Props) {
@@ -20,7 +21,7 @@ export default function DashboardEditor({ page, username }: Props) {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full items-center">
       {/* LEFT PANEL (scrollable) */}
       <div className="w-full md:w-1/2 h-full overflow-y-auto bg-surface-low p-4 pb-10 space-y-6 ">
         <div className="flex">
@@ -32,6 +33,12 @@ export default function DashboardEditor({ page, username }: Props) {
 
           <PageEditor page={page} onUpdate={triggerPreviewRefresh} />
         </div>
+
+        <SocialLinksSection
+          iconStyle={page.iconStyle ?? "colored"}
+          links={page.socials}
+          pageId={page.id}
+        />
 
         <LinksList
           initialLinks={page.links}

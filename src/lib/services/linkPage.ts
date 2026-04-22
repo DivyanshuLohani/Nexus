@@ -1,6 +1,6 @@
 "use server";
 import db from "../db/drizzle";
-import { linksTable, pagesTable, user } from "../db/schema";
+import { linksTable, pageSocials, pagesTable, user } from "../db/schema";
 import { eq, and } from "drizzle-orm";
 import { CreatePageInput, createPageSchema } from "../db/validation";
 import { nanoid } from "nanoid";
@@ -29,17 +29,26 @@ export async function getPageBySlug(userId: string, slug: string) {
     .leftJoin(linksTable, eq(linksTable.pageId, pagesTable.id))
     .where(and(eq(pagesTable.userId, userId), eq(pagesTable.slug, slug)))
     .orderBy(linksTable.order);
+
   if (!rows.length) return null;
 
-  // 🧠 extract page once
+  // ✅ extract page
   const page = rows[0].page;
 
-  // 🧠 collect links (filter nulls from left join)
+  // ✅ collect links
   const links = rows.map((r) => r.link).filter((l) => l !== null);
+
+  // 🔥 fetch socials separately (IMPORTANT)
+  const socials = await db
+    .select()
+    .from(pageSocials)
+    .where(eq(pageSocials.pageId, page.id))
+    .orderBy(pageSocials.order);
 
   return {
     ...page,
     links,
+    socials,
   };
 }
 export async function createDefaultPage(userId: string) {
@@ -142,11 +151,12 @@ export async function getPublicPage(username: string, slug?: string) {
 
   if (!foundUser) return null;
 
-  // 2. get page
+  // 2. get page condition
   const pageQuery = slug
     ? and(eq(pagesTable.userId, foundUser.id), eq(pagesTable.slug, slug))
     : and(eq(pagesTable.userId, foundUser.id), eq(pagesTable.isDefault, true));
 
+  // 3. fetch page + links
   const rows = await db
     .select({
       page: pagesTable,
@@ -156,15 +166,23 @@ export async function getPublicPage(username: string, slug?: string) {
     .leftJoin(linksTable, eq(linksTable.pageId, pagesTable.id))
     .where(pageQuery)
     .orderBy(linksTable.order);
+
   if (!rows.length) return null;
 
   const page = rows[0].page;
 
   const links = rows.map((r) => r.link).filter((l) => l !== null);
 
+  const socials = await db
+    .select()
+    .from(pageSocials)
+    .where(eq(pageSocials.pageId, page.id))
+    .orderBy(pageSocials.order);
+
   return {
     user: foundUser,
     page,
     links,
+    socials,
   };
 }

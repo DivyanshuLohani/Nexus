@@ -25,3 +25,26 @@ export function getPlatformIcon(url: string) {
 
   return null;
 }
+
+export const SOCIAL_PLATFORMS = [
+  "instagram",
+  "youtube",
+  "twitter",
+  "twitter-x",
+  "github",
+  "linkedin",
+  "facebook",
+  "tiktok",
+  "discord",
+  "spotify",
+  "reddit",
+  "telegram",
+  "whatsapp",
+  "pinterest",
+  "dribbble",
+  "medium",
+  "gitlab",
+  "quora",
+] as const;
+
+export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];

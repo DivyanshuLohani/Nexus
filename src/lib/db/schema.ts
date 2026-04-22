@@ -223,7 +223,13 @@ export type DbUser = InferSelectModel<typeof user>;
 export type DbPage = InferSelectModel<typeof pagesTable>;
 export type DbLink = InferSelectModel<typeof linksTable>;
 export type DbPageView = InferSelectModel<typeof pageView>;
+export type DbSocialLink = InferSelectModel<typeof pageSocials>;
 
 export type PageWithLinks = DbPage & {
   links: DbLink[];
+};
+export type PageWithLinksAndSocials = DbPage & {
+  links: DbLink[];
+} & {
+  socials: DbSocialLink[];
 };
