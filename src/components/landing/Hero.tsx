@@ -56,6 +56,32 @@ export default function Hero() {
                 { id: "2", label: "Twitter", url: "#" },
                 { id: "3", label: "GitHub", url: "#" },
               ] as DbLink[],
+              socials: [
+                {
+                  id: "1",
+                  platform: "twitter",
+                  url: "https://twitter.com/divyanshulohani",
+                  createdAt: new Date(),
+                  order: 0,
+                  pageId: "1",
+                },
+                {
+                  id: "2",
+                  platform: "github",
+                  url: "https://github.com/DivyanshuLohani",
+                  createdAt: new Date(),
+                  order: 1,
+                  pageId: "1",
+                },
+                {
+                  id: "3",
+                  platform: "instagram",
+                  url: "https://instagram.com/divyanshulohani_",
+                  createdAt: new Date(),
+                  order: 2,
+                  pageId: "1",
+                },
+              ],
             }}
             preview={true}
           />
