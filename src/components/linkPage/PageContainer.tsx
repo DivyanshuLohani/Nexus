@@ -20,7 +20,7 @@ export default function PageContainer({
       //   ${preview ? "h-screen " : "min-h-screen py-10"}
       className={`
                 relative flex justify-center
-                py-6
+                py-6 min-h-screen
             `}
     >
       <div className="absolute inset-0 bg-black/20 pointer-events-none" />
