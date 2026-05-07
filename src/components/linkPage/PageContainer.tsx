@@ -5,7 +5,7 @@ import { DbPage } from "@/lib/db/schema";
 export default function PageContainer({
   page,
   children,
-  preview = false,
+  // preview = false,
 }: {
   page: DbPage;
   children: React.ReactNode;

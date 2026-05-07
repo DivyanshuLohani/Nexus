@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { Home, BarChart3, Settings } from "lucide-react";
 import Image from "next/image";
+import { AccountDropdown } from "./account-menu";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden h-full border-outline-variant border md:flex w-64 bg-surface-low p-4 flex-col justify-between">
       <div>
-        <Link href="/" className="mb-8 flex items-center gap-2">
+        <Link href="/" className="mb-2 flex items-center gap-2">
           <Image
             width={32}
             height={32}
@@ -36,6 +37,9 @@ export default function Sidebar() {
           />
           <h2 className="text-lg font-semibold">Nexus</h2>
         </Link>
+        <div className="mb-2">
+          <AccountDropdown />
+        </div>
 
         <nav className="space-y-2">
           {navItems.map((item) => {

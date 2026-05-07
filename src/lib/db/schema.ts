@@ -8,7 +8,7 @@ import {
   uniqueIndex,
   integer,
 } from "drizzle-orm/pg-core";
-import { InferSelectModel, relations } from "drizzle-orm";
+import { InferSelectModel, relations, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 export type IconStyle =
@@ -227,11 +227,53 @@ export const pageAnalyticsRelations = relations(pageAnalytics, ({ one }) => ({
   }),
 }));
 
+export const plansTable = pgTable("plans", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+
+  name: text("name").notNull(),
+
+  slug: text("slug").notNull().unique(),
+
+  description: text("description"),
+
+  featured: boolean("featured").default(false).notNull(),
+  mostPopular: boolean("most_popular").default(false).notNull(),
+  shownInPricing: boolean("shown_in_pricing").default(true).notNull(),
+
+  monthlyPrice: integer("monthly_price").notNull(),
+  yearlyPrice: integer("yearly_price"),
+
+  maxLinks: integer("max_links").default(200).notNull(),
+  maxLinkImages: integer("max_link_images").default(0).notNull(),
+
+  // Array of layouts included
+  includedLayouts: text("included_layouts")
+    .array()
+    .default(["stack"])
+    .notNull(),
+
+  branding: boolean("branding").default(true).notNull(),
+
+  analytics: boolean("analytics").default(true).notNull(),
+  detailedAnalytics: boolean("detailed_analytics").default(false).notNull(),
+
+  customDomains: boolean("custom_domains").default(false).notNull(),
+
+  prioritySupport: boolean("priority_support").default(false).notNull(),
+
+  active: boolean("active").default(true).notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type DbUser = InferSelectModel<typeof user>;
 export type DbPage = InferSelectModel<typeof pagesTable>;
 export type DbLink = InferSelectModel<typeof linksTable>;
 export type DbPageView = InferSelectModel<typeof pageView>;
 export type DbSocialLink = InferSelectModel<typeof pageSocials>;
+export type DbPlan = InferSelectModel<typeof plansTable>;
 
 export type PageWithLinks = DbPage & {
   links: DbLink[];

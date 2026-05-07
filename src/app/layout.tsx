@@ -106,7 +106,9 @@ export default function RootLayout({
           <Toaster position="top-right" />
         </div>
 
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
