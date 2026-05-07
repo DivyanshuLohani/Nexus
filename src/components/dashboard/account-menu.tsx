@@ -14,10 +14,8 @@ import {
   CircleHelp,
   Lightbulb,
   LogOut,
-  Plus,
   User,
   Zap,
-  FileText,
   ChevronDown,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";

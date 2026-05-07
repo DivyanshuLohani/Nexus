@@ -49,7 +49,7 @@ export default function Navbar() {
         <h1 className="font-semibold text-lg">Nexus</h1>
 
         <nav className="flex items-center gap-6 text-sm">
-          <Link href="#" className="hidden md:block">
+          <Link href="/pricing" className="hidden md:block">
             Pricing
           </Link>
           <a
