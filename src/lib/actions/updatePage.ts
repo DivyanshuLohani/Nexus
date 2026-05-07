@@ -89,3 +89,19 @@ export async function updatePageAppearanceAction(
 
   return updated;
 }
+
+export async function updatePageBrandingStatusAction(
+  pageId: string,
+  brandingBadge: boolean,
+) {
+  const [page] = await db
+    .update(pagesTable)
+    .set({
+      brandingBadge,
+      updatedAt: new Date(),
+    })
+    .where(eq(pagesTable.id, pageId))
+    .returning();
+
+  return page;
+}

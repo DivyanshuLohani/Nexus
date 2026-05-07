@@ -9,6 +9,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { InferSelectModel, relations } from "drizzle-orm";
+import { nanoid } from "nanoid";
 
 export type IconStyle =
   | "colored" // original brand colors
@@ -110,7 +111,9 @@ export const accountRelations = relations(account, ({ one }) => ({
 export const pagesTable = pgTable(
   "pages",
   {
-    id: text().primaryKey(),
+    id: text()
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
     userId: text()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
@@ -126,6 +129,8 @@ export const pagesTable = pgTable(
       .$type<IconStyle>()
       .default("colored")
       .notNull(),
+
+    brandingBadge: boolean("branding_badge").default(true).notNull(),
 
     isDefault: boolean("is_default").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -145,7 +150,9 @@ export const pagesRelations = relations(pagesTable, ({ many }) => ({
 
 // Links table
 export const linksTable = pgTable("links", {
-  id: text().primaryKey(),
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   pageId: text()
     .notNull()
     .references(() => pagesTable.id, { onDelete: "cascade" }),
@@ -153,6 +160,7 @@ export const linksTable = pgTable("links", {
   url: varchar({ length: 2048 }).notNull(),
   icon: varchar({ length: 255 }),
   order: integer("order").notNull(),
+  image: text("image"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

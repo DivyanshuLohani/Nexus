@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Dialog from "@/components/ui/dialog";
 import IconRenderer from "@/components/linkPage/IconRenderer";
 import { Plus, Trash2, Pencil } from "lucide-react";
 import { SOCIAL_PLATFORMS, SocialPlatform } from "@/lib/platforms";
@@ -12,6 +11,14 @@ import {
   deleteSocialLink,
   updateSocialLink,
 } from "@/lib/actions/socialLinks";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export default function SocialLinksSection({
   links: initialLinks,
@@ -142,61 +149,83 @@ export default function SocialLinksSection({
         open={open}
         onOpenChange={(o) => {
           setOpen(o);
+
           if (!o) {
             setEditing(null);
             setUrl("");
           }
         }}
-        trigger={
+      >
+        <DialogTrigger asChild>
           <button className="w-full border border-dashed border-outline-variant rounded-xl p-4 text-sm flex items-center justify-center gap-2 hover:bg-surface-low transition">
             <Plus size={16} />
             Add social link
           </button>
-        }
-        title={editing ? "Edit Social Link" : "Add Social Link"}
-        description="Select platform and add your profile URL"
-      >
-        <div className="space-y-4">
-          {/* Platform select */}
-          <div className="grid grid-cols-4 gap-2">
-            {SOCIAL_PLATFORMS.map((p) => {
-              const disabled = !editing && links.some((l) => l.platform === p);
+        </DialogTrigger>
 
-              return (
-                <button
-                  key={p}
-                  disabled={disabled}
-                  onClick={() => setPlatform(p)}
-                  className={`
-                    p-2 rounded-lg border flex items-center justify-center
-                    ${platform === p ? "border-primary" : "border-outline-variant"}
-                    ${disabled ? "opacity-30 cursor-not-allowed" : ""}
-                  `}
-                >
-                  <div className="p-1 rounded bg-white/10">
-                    <IconRenderer platform={p} style={iconStyle} />
-                  </div>
-                </button>
-              );
-            })}
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {editing ? "Edit Social Link" : "Add Social Link"}
+            </DialogTitle>
+
+            <DialogDescription>
+              Select platform and add your profile URL
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Platform select */}
+            <div className="grid grid-cols-4 gap-2">
+              {SOCIAL_PLATFORMS.map((p) => {
+                const disabled =
+                  !editing && links.some((l) => l.platform === p);
+
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => setPlatform(p)}
+                    className={`
+                p-2 rounded-lg border flex items-center justify-center transition
+                ${
+                  platform === p
+                    ? "border-primary bg-primary/10"
+                    : "border-outline-variant"
+                }
+                ${
+                  disabled
+                    ? "opacity-30 cursor-not-allowed"
+                    : "hover:bg-surface-low"
+                }
+              `}
+                  >
+                    <div className="p-1 rounded bg-white/10">
+                      <IconRenderer platform={p} style={iconStyle} />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* URL input */}
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://..."
+              className="w-full px-3 py-2 bg-surface-high rounded-md text-sm outline-none border border-outline-variant focus:border-primary"
+            />
+
+            {/* Action */}
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-primary text-white py-2 rounded-md hover:opacity-90 transition"
+            >
+              {editing ? "Update" : "Add"}
+            </button>
           </div>
-
-          {/* URL input */}
-          <input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://..."
-            className="w-full px-3 py-2 bg-surface-high rounded-md text-sm"
-          />
-
-          {/* Action */}
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-primary text-white py-2 rounded-md"
-          >
-            {editing ? "Update" : "Add"}
-          </button>
-        </div>
+        </DialogContent>
       </Dialog>
     </div>
   );

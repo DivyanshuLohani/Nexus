@@ -23,7 +23,7 @@ export default function PublicPageView({ data, preview }: Props) {
       <ProfileSection page={data.page} />
       <SocialIconsSection socials={data.socials} page={data.page} />
       <LinksSection links={data.links} page={data.page} />
-      {!preview && <BrandingBadge />}
+      {data.page.brandingBadge && <BrandingBadge />}
     </PageContainer>
   );
 }

@@ -129,12 +129,14 @@ export async function updateLink(
   linkId: string,
   label: string,
   url: string,
+  image?: string | null,
 ) {
   const [updatedLink] = await db
     .update(linksTable)
     .set({
       label,
       url,
+      image: image ?? null,
     })
     .where(eq(linksTable.id, linkId))
     .returning();

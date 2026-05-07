@@ -8,6 +8,7 @@ import { PageWithLinksAndSocials } from "@/lib/db/schema";
 import ProfileImageUploader from "./image-uploader";
 import AppearanceEditor from "./appearance-editor";
 import SocialLinksSection from "./social-icons";
+import BrandingBadgeEditor from "./branding-badge-toggle";
 
 interface Props {
   page: PageWithLinksAndSocials;
@@ -53,6 +54,11 @@ export default function DashboardEditor({ page, username }: Props) {
           initialIconStyle={page.iconStyle ?? "colored"}
           initialIconsOff={page.iconsOff ?? false}
           onUpdate={triggerPreviewRefresh}
+        />
+        <BrandingBadgeEditor
+          enabled={page.brandingBadge ?? true}
+          onChange={triggerPreviewRefresh}
+          pageId={page.id}
         />
       </div>
 

@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { getPlatformIcon } from "@/lib/platforms";
 import IconRenderer from "./IconRenderer";
 import { hexToRgba } from "@/lib/color";
+import Image from "next/image";
 
 export default function LinksSection({
   links,
@@ -12,7 +13,6 @@ export default function LinksSection({
   page: DbPage;
 }) {
   const borderColor = hexToRgba(page.textColor ?? "", 0.15);
-  const hoverBorder = hexToRgba(page.textColor ?? "", 0.35);
   const hoverBg = hexToRgba(page.textColor ?? "", 0.08);
   const glow = hexToRgba(page.textColor ?? "", 0.25);
 
@@ -20,6 +20,7 @@ export default function LinksSection({
     <div className="space-y-4">
       {links.map((link) => {
         const platform = getPlatformIcon(link.url);
+        const hasImage = !!link.image;
 
         return (
           <a
@@ -29,44 +30,65 @@ export default function LinksSection({
             rel="noopener noreferrer"
             className="
               group relative block w-full
-              rounded-xl
+              rounded-2xl
+              overflow-hidden
 
               bg-white/5
               backdrop-blur-xl
 
               shadow-[0_8px_32px_rgba(0,0,0,0.3)]
 
-              px-4 py-3
               text-left
 
               transition-all duration-300
               hover:scale-[1.02]
               hover:bg-white/10
-              hover:border-white/20
             "
             style={{
               border: `1px solid ${borderColor}`,
             }}
           >
+            {/* IMAGE */}
+            {hasImage && (
+              <div className="relative aspect-video w-full overflow-hidden border-b border-white/10">
+                <Image
+                  src={link.image!}
+                  alt={link.label}
+                  width={800}
+                  height={800}
+                  className="
+                    h-full w-full object-cover
+                    transition-transform duration-500
+                    group-hover:scale-105
+                  "
+                />
+
+                {/* image overlay */}
+                <div className="absolute inset-0 bg-black/10" />
+              </div>
+            )}
+
             {/* highlight */}
-            <div className="pointer-events-none absolute inset-0 rounded-xl bg-linear-to-b from-white/20 to-transparent opacity-10 group-hover:opacity-20 transition" />
+            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-b from-white/20 to-transparent opacity-10 group-hover:opacity-20 transition" />
 
             {/* glow */}
             <div
-              className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition blur-xl"
+              className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition blur-xl"
               style={{ background: glow }}
             />
 
             <div
-              className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition"
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition"
               style={{ background: hoverBg }}
             />
 
-            {/* content */}
-            <div className="relative flex items-center justify-between">
+            {/* CONTENT */}
+            <div className="relative flex items-center justify-between px-4 py-3">
               {/* LEFT */}
               <div
-                className={`flex items-center gap-3 ${page.iconsOff ? "justify-center w-full" : ""}`}
+                className={`flex items-center gap-3 ${
+                  page.iconsOff ? "justify-center w-full" : ""
+                }`}
               >
                 {/* ICON */}
                 {!page.iconsOff &&
@@ -90,7 +112,7 @@ export default function LinksSection({
               {/* RIGHT */}
               <ExternalLink
                 size={12}
-                className="opacity-60 group-hover:opacity-100 transition"
+                className="opacity-60 group-hover:opacity-100 transition shrink-0"
               />
             </div>
           </a>

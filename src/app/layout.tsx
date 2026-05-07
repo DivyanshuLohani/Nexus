@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 import type { Metadata } from "next";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Nexus | Your Digital Identity, Simplified";
@@ -88,8 +91,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased `}
-      data-theme="dark"
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+      )}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col text-on-surface">
         <div>

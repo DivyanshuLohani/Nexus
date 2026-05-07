@@ -10,6 +10,7 @@ export async function updateLinkAction(
   linkId: string,
   label: string,
   url: string,
+  image?: string | null,
 ) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -19,7 +20,7 @@ export async function updateLinkAction(
     throw new Error("Unauthorized");
   }
 
-  return await updateLink(session.user.id, linkId, label, url);
+  return await updateLink(session.user.id, linkId, label, url, image);
 }
 
 interface OrderItem {

@@ -1,26 +1,34 @@
 import Sidebar from "@/components/dashboard/sidebar";
 import BottomNav from "@/components/dashboard/bottom-nav";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
-    children,
+export default async function DashboardLayout({
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <div className="flex min-h-screen bg-surface">
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-            {/* Desktop Sidebar */}
-            <div className="hidden md:block">
-                <Sidebar />
-            </div>
+  if (!session) {
+    redirect("/auth/login?next=/dashboard");
+  }
 
-            {/* Main */}
-            <main className="flex-1">
-                {children}
-            </main>
+  return (
+    <div className="flex min-h-screen bg-surface">
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
 
-            {/* Mobile Bottom Nav */}
-            <BottomNav />
-        </div>
-    );
+      {/* Main */}
+      <main className="flex-1">{children}</main>
+
+      {/* Mobile Bottom Nav */}
+      <BottomNav />
+    </div>
+  );
 }
