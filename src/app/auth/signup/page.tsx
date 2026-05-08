@@ -5,14 +5,29 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export default async function SignupPage() {
+interface Props {
+  searchParams: Promise<{
+    plan?: string;
+    tenure?: "monthly" | "yearly";
+  }>;
+}
+
+export default async function SignupPage({ searchParams }: Props) {
   // Get session if session is there redirect to dashboard
+  const params = await searchParams;
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (session) {
-    redirect("/dashboard");
+    let url = "/dashboard";
+    const plan = params.plan;
+    const tenure = params.tenure;
+    if (plan && tenure) {
+      url = `/checkout?plan=${plan}&tenure=${tenure}`;
+    }
+    redirect(url);
   }
 
   return (

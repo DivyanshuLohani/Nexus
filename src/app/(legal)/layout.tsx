@@ -1,6 +1,5 @@
 import Footer from "@/components/landing/Footer";
 import Navbar from "@/components/landing/Navbar";
-import Link from "next/link";
 
 export default function LegalLayout({
   children,

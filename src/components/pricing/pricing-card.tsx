@@ -8,6 +8,7 @@ interface Props {
     id: string;
     name: string;
     description: string | null;
+    slug: string;
 
     price: number;
 
@@ -120,7 +121,7 @@ export default function PricingCard({ plan, yearly }: Props) {
       <button
         onClick={() => {
           router.push(
-            `/auth/signup?plan=${plan.id}&tenure=${yearly ? "yearly" : "monthly"}`,
+            `/auth/signup?plan=${plan.slug}&tenure=${yearly ? "yearly" : "monthly"}`,
           );
         }}
         className={`

@@ -56,7 +56,7 @@ export default function SignupForm() {
           const tenure = searchParams.get("tenure");
           if (plan) {
             // Redirect to Payments Page with the selected plan and tenure as query params
-            router.push(`/dashboard?plan=${plan}&tenure=${tenure}`);
+            router.push(`/checkout?plan=${plan}&tenure=${tenure}`);
             return;
           }
 
