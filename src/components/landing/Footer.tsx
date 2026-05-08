@@ -13,6 +13,12 @@ export default function Footer() {
         <a href="/privacy" className="hover:text-foreground transition">
           Privacy
         </a>
+        <a href="/support" className="hover:text-foreground transition">
+          Support
+        </a>
+        <a href="/feedback" className="hover:text-foreground transition">
+          Feedback
+        </a>
         <a
           href="https://github.com/DivyanshuLohani/Nexus"
           className="hover:text-foreground transition"

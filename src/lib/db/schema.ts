@@ -232,6 +232,23 @@ export const pageAnalyticsRelations = relations(pageAnalytics, ({ one }) => ({
   }),
 }));
 
+export const feedbacksTable = pgTable("feedbacks", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+  name: text("name"),
+  email: text("email"),
+  message: text("message").notNull(),
+  context: text("context").default("feedback").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const feedbacksRelations = relations(feedbacksTable, ({ one }) => ({
+  user: one(user, {
+    fields: [feedbacksTable.userId],
+    references: [user.id],
+  }),
+}));
+
 export const plansTable = pgTable("plans", {
   id: text("id")
     .primaryKey()

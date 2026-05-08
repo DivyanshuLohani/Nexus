@@ -19,12 +19,16 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 export function AccountDropdown() {
   const { data, isPending, error } = authClient.useSession();
   const router = useRouter();
+  const params = useParams();
+  const settingsUrl = params.slug
+    ? `/dashboard/${params.slug}/settings/account`
+    : "/dashboard";
 
   if (isPending || error || !data?.session) {
     // Return a skeleton of the dropdown trigger
@@ -45,7 +49,7 @@ export function AccountDropdown() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-[280px] p-0 overflow-hidden">
+      <DropdownMenuContent className="w-70 p-0 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
@@ -69,9 +73,11 @@ export function AccountDropdown() {
 
         {/* Menu Items */}
         <div className="py-1">
-          <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
-            <User className="h-4 w-4" />
-            <span>Account</span>
+          <DropdownMenuItem asChild className="gap-3 px-4 py-3 cursor-pointer">
+            <Link href={settingsUrl} className="flex w-full items-center gap-3">
+              <User className="h-4 w-4" />
+              <span>Account</span>
+            </Link>
           </DropdownMenuItem>
 
           <Link href="/pricing">
@@ -82,13 +88,17 @@ export function AccountDropdown() {
           </Link>
 
           <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
-            <CircleHelp className="h-4 w-4" />
-            <span>Support</span>
+            <Link href="/support" className="flex w-full items-center gap-3">
+              <CircleHelp className="h-4 w-4" />
+              <span>Support</span>
+            </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
-            <Lightbulb className="h-4 w-4" />
-            <span>Share feedback</span>
+            <Link href="/feedback" className="flex w-full items-center gap-3">
+              <Lightbulb className="h-4 w-4" />
+              <span>Share feedback</span>
+            </Link>
           </DropdownMenuItem>
         </div>
 
