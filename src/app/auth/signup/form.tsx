@@ -6,10 +6,9 @@ import { z } from "zod";
 import Input from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
-// ✅ Validation Schema
 const schema = z
   .object({
     username: z
@@ -30,6 +29,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -51,6 +51,15 @@ export default function SignupForm() {
       {
         onSuccess: () => {
           toast.success("Account created successfully");
+          //  See plan details page, we push plan and tenure as query params. We can use these to show a custom message on the dashboard about the trial or something similar.
+          const plan = searchParams.get("plan");
+          const tenure = searchParams.get("tenure");
+          if (plan) {
+            // Redirect to Payments Page with the selected plan and tenure as query params
+            router.push(`/dashboard?plan=${plan}&tenure=${tenure}`);
+            return;
+          }
+
           router.replace("/dashboard");
         },
         onError: (ctx) => {

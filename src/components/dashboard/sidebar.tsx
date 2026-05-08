@@ -5,10 +5,12 @@ import { useParams, usePathname } from "next/navigation";
 import { Home, BarChart3, Settings } from "lucide-react";
 import Image from "next/image";
 import { AccountDropdown } from "./account-menu";
+import { useTheme } from "next-themes";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const params = useParams();
+  const { theme } = useTheme();
 
   const navItems = [
     { label: "Links", href: `/dashboard/${params.slug ?? ""}`, icon: Home },
@@ -33,7 +35,7 @@ export default function Sidebar() {
             height={32}
             src="/icons/logo.svg"
             alt="Nexus Logo"
-            className="w-6 h-6 invert-0 dark:invert"
+            className="rounded-sm text-black dark:text-white"
           />
           <h2 className="text-lg font-semibold">Nexus</h2>
         </Link>

@@ -1,11 +1,13 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { data, isPending } = authClient.useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,13 +67,21 @@ export default function Navbar() {
           >
             <FaGithub size={18} />
           </a>
-
-          <Link
-            href="/auth/signup"
-            className="bg-black text-white px-4 py-2 text-sm rounded-md"
-          >
-            Get Started
-          </Link>
+          {!isPending && data?.user ? (
+            <Link
+              href="/dashboard"
+              className="bg-black text-white px-4 py-2 text-sm rounded-md"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              href="/auth/signup"
+              className="bg-black text-white px-4 py-2 text-sm rounded-md"
+            >
+              Get Started
+            </Link>
+          )}
         </nav>
       </div>
     </header>

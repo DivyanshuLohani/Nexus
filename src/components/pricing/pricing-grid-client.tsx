@@ -29,6 +29,7 @@ export default function PricingGridClient({ plans }: Props) {
             key={plan.id}
             plan={{
               ...plan,
+              yearlyPrice: plan.yearlyPrice || plan.monthlyPrice * 12,
               price: yearly
                 ? plan.yearlyPrice || plan.monthlyPrice * 12
                 : plan.monthlyPrice,

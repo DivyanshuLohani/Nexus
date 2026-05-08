@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   yearly: boolean;
@@ -23,6 +24,9 @@ interface Props {
     prioritySupport: boolean;
 
     includedLayouts: string[];
+
+    monthlyPrice: number;
+    yearlyPrice: number;
   };
 }
 
@@ -36,7 +40,11 @@ export default function PricingCard({ plan, yearly }: Props) {
     plan.customDomains && "Custom domains",
     plan.prioritySupport && "Priority support",
   ].filter(Boolean);
-
+  const router = useRouter();
+  const discountPercentage = Math.round(
+    ((plan.monthlyPrice * 12 - plan.yearlyPrice) / (plan.monthlyPrice * 12)) *
+      100,
+  );
   return (
     <div
       className={`
@@ -74,6 +82,17 @@ export default function PricingCard({ plan, yearly }: Props) {
           </span>
         </div>
 
+        {yearly && discountPercentage > 0 && (
+          <div
+            className={`mt-2 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+              plan.featured
+                ? "bg-primary-foreground/15 text-primary-foreground"
+                : "bg-green-100 text-green-700"
+            }`}
+          >
+            Save {discountPercentage}% anually
+          </div>
+        )}
         <p
           className={`mt-4 text-sm ${
             plan.featured
@@ -99,9 +118,14 @@ export default function PricingCard({ plan, yearly }: Props) {
       </div>
 
       <button
+        onClick={() => {
+          router.push(
+            `/auth/signup?plan=${plan.id}&tenure=${yearly ? "yearly" : "monthly"}`,
+          );
+        }}
         className={`
           w-full py-3 rounded-xl font-medium transition
-
+          cursor-pointer
           ${
             plan.featured
               ? "bg-background text-foreground hover:bg-background/90"
