@@ -5,6 +5,8 @@ import { auth } from "@/lib/auth";
 
 import CheckoutPageClient from "@/components/checkout/CheckoutPageWrapper";
 import { getPlanBySlug } from "@/lib/services/pricing";
+import { Suspense } from "react";
+import CheckoutPageSkeleton from "@/components/checkout/CheckoutSkeleton";
 
 interface Props {
   searchParams: Promise<{
@@ -36,12 +38,14 @@ export default async function CheckoutPage({ searchParams }: Props) {
   }
 
   return (
-    <CheckoutPageClient
-      plan={{
-        ...plan,
-        yearlyPrice: plan.yearlyPrice ?? plan.monthlyPrice * 12,
-      }}
-      initialTenure={tenure}
-    />
+    <Suspense fallback={<CheckoutPageSkeleton />}>
+      <CheckoutPageClient
+        plan={{
+          ...plan,
+          yearlyPrice: plan.yearlyPrice ?? plan.monthlyPrice * 12,
+        }}
+        initialTenure={tenure}
+      />
+    </Suspense>
   );
 }

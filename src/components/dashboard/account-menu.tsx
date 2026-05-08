@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function AccountDropdown() {
   const { data, isPending, error } = authClient.useSession();
@@ -73,10 +74,12 @@ export function AccountDropdown() {
             <span>Account</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
-            <Zap className="h-4 w-4" />
-            <span>Upgrade</span>
-          </DropdownMenuItem>
+          <Link href="/pricing">
+            <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
+              <Zap className="h-4 w-4" />
+              <span>Upgrade</span>
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuItem className="gap-3 px-4 py-3 cursor-pointer">
             <CircleHelp className="h-4 w-4" />

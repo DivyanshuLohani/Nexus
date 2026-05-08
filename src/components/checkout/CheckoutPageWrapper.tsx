@@ -87,7 +87,12 @@ export default function CheckoutPageClient({ plan, initialTenure }: Props) {
         <OrderSummary planName={plan.name} tenure={tenure} amount={amount} />
 
         {/* PAYMENT */}
-        <ProceedPaymentButton />
+        <ProceedPaymentButton
+          planSlug={plan.slug}
+          planName={plan.name}
+          tenure={tenure}
+          amount={amount}
+        />
       </div>
     </main>
   );

@@ -7,8 +7,9 @@ import {
   index,
   uniqueIndex,
   integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
-import { InferSelectModel, relations, sql } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 export type IconStyle =
@@ -22,6 +23,10 @@ export const user = pgTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+
+  activePlanId: text("active_plan_id").references(() => plansTable.id),
+  activePlanValidUntil: timestamp("active_plan_valid_until"),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -264,6 +269,34 @@ export const plansTable = pgTable("plans", {
   prioritySupport: boolean("priority_support").default(false).notNull(),
 
   active: boolean("active").default(true).notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const transactionStatusEnum = pgEnum("transaction_status", [
+  "pending",
+  "completed",
+  "failed",
+  "refunded",
+]);
+export const transactionsTable = pgTable("transactions", {
+  id: text("id").primaryKey().$defaultFn(nanoid),
+  userId: text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  planId: text()
+    .notNull()
+    .references(() => plansTable.id, { onDelete: "cascade" }),
+
+  amount: integer("amount").notNull(),
+  tenure: text("tenure").notNull(), // monthly or yearly
+
+  // Status with enum
+  status: transactionStatusEnum("status").notNull(),
+
+  paymentProvider: text("payment_provider").notNull(), // e.g. stripe
+  paymentProviderId: text("payment_provider_id").notNull(), // e.g. stripe charge id
+  paymentProviderStatus: text("payment_provider_status").notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
