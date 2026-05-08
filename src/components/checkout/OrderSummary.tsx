@@ -9,20 +9,22 @@ export default function OrderSummary({ planName, tenure, amount }: Props) {
   const total = amount + tax;
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-      <h2 className="text-xl font-semibold mb-8">Order details</h2>
+    <div className="rounded-md border border-border bg-card p-6">
+      <h2 className="text-xl font-semibold mb-8 text-card-foreground">
+        Order details
+      </h2>
 
-      <div className="space-y-5 text-sm">
+      <div className="space-y-5 text-sm text-card-foreground">
         <div className="flex justify-between">
           <div>
             <p>{planName} plan</p>
-            <p className="text-zinc-500 capitalize">{tenure}</p>
+            <p className="text-muted-foreground capitalize">{tenure}</p>
           </div>
 
           <span>USD {amount}</span>
         </div>
 
-        <div className="border-t border-zinc-800 pt-5 flex justify-between">
+        <div className="border-t border-border pt-5 flex justify-between">
           <span>Subtotal</span>
           <span>USD {amount}</span>
         </div>
@@ -32,7 +34,7 @@ export default function OrderSummary({ planName, tenure, amount }: Props) {
           <span>USD {tax}</span>
         </div>
 
-        <div className="border-t border-zinc-800 pt-5 flex justify-between text-base font-semibold">
+        <div className="border-t border-border pt-5 flex justify-between text-base font-semibold">
           <span>Total due today</span>
           <span>USD {total}</span>
         </div>

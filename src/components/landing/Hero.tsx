@@ -17,21 +17,21 @@ export default function Hero() {
           SIMPLIFIED.
         </h1>
 
-        <p className="mt-6 text-gray-600 max-w-md">
+        <p className="mt-6 text-muted-foreground max-w-md">
           A monochromatic landscape for your professional presence.
         </p>
 
         <div className="flex gap-4 mt-8 justify-center md:justify-start">
           <Link
             href={"/auth/signup"}
-            className="bg-black text-white px-6 py-3 text-sm"
+            className="bg-primary text-primary-foreground px-6 py-3 text-sm rounded-md"
           >
             GET STARTED
           </Link>
 
           <Link
             href={"/u/divyanshulohani"}
-            className="border border-black px-6 py-3 text-sm"
+            className="border border-border px-6 py-3 text-sm rounded-md"
           >
             LIVE DEMO
           </Link>
@@ -40,7 +40,7 @@ export default function Hero() {
 
       {/* preview */}
       <div className="flex justify-center">
-        <div className="w-[280px] h-[520px] border-[6px] border-black rounded-[40px] object-cover overflow-hidden">
+        <div className="w-[280px] h-[520px] border-[6px] border-black dark:border-white rounded-[40px] object-cover overflow-hidden">
           <PublicPageView
             data={{
               user: { name: "Nexus" } as DbUser,

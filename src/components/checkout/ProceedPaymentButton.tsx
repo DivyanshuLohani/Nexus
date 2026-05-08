@@ -3,10 +3,10 @@ export default function ProceedPaymentButton() {
     <button
       className="
         w-full mt-6
-        bg-white text-black
-        py-4 rounded-2xl
+        bg-primary text-primary-foreground
+        py-4 rounded-md
         font-semibold
-        hover:bg-zinc-200
+        hover:bg-primary/90
         transition
       "
     >

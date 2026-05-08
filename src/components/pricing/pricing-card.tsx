@@ -48,7 +48,7 @@ export default function PricingCard({ plan, yearly }: Props) {
   return (
     <div
       className={`
-        relative rounded-3xl p-8
+        relative rounded-md p-8
         transition-all duration-300
         border
 

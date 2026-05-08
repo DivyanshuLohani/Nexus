@@ -17,7 +17,7 @@ export default function BillingOptionCard({
     <button
       onClick={onClick}
       className={`
-        relative rounded-2xl border p-5 text-left transition-all duration-200
+        relative rounded-md border p-5 text-left transition-all duration-200
 
         ${
           selected

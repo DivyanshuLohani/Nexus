@@ -8,7 +8,8 @@ import Footer from "@/components/landing/Footer";
 export async function generateMetadata() {
   return {
     title: "Nexus | Your Digital Identity, Simplified",
-    description: "A monochromatic landscape for your professional presence. Create your surgical, high-precision link-in-bio profile.",
+    description:
+      "A monochromatic landscape for your professional presence. Create your surgical, high-precision link-in-bio profile.",
     openGraph: {
       title: "Nexus | Your Digital Identity, Simplified",
       description: "A monochromatic landscape for your professional presence.",
@@ -26,10 +27,9 @@ export async function generateMetadata() {
   };
 }
 
-
 export default function Home() {
   return (
-    <main className="bg-white text-black">
+    <main className="bg-background text-foreground">
       <Navbar />
       <Hero />
       <Features />

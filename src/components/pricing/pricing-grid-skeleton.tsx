@@ -16,7 +16,7 @@ export default function PricingGridSkeleton() {
           <div
             key={i}
             className="
-              rounded-3xl border border-border
+              rounded-md border border-border
               bg-card p-8 h-[520px]
             "
           >

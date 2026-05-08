@@ -22,10 +22,13 @@ export default function PricingFAQ() {
 
       <div className="space-y-4">
         {faqs.map((faq) => (
-          <div key={faq.q} className="border border-zinc-200 rounded-2xl p-6">
+          <div
+            key={faq.q}
+            className="border border-border rounded-md p-6 bg-card"
+          >
             <h3 className="font-semibold mb-2">{faq.q}</h3>
 
-            <p className="text-sm text-zinc-600">{faq.a}</p>
+            <p className="text-sm text-muted-foreground">{faq.a}</p>
           </div>
         ))}
       </div>

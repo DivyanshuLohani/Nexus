@@ -6,7 +6,7 @@ export default function CheckoutHeader() {
     <div className="mb-8">
       <Link
         href="/pricing"
-        className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition"
+        className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
       >
         <ArrowLeft size={18} />
         Back

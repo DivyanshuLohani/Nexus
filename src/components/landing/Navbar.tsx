@@ -36,19 +36,21 @@ export default function Navbar() {
               mt-4
               px-6 py-3
               scale-[0.96]
-              rounded-xl
+              rounded-md
       
               shadow-lg
-              backdrop-blur-md bg-white/80
+              backdrop-blur-md bg-background/80
             `
               : `
               scale-100
-              bg-white
+              bg-background
             `
           }
         `}
       >
-        <h1 className="font-semibold text-lg">Nexus</h1>
+        <Link href="/">
+          <h1 className="font-semibold text-lg">Nexus</h1>
+        </Link>
 
         <nav className="flex items-center gap-6 text-sm">
           <Link href="/pricing" className="hidden md:block">
@@ -59,8 +61,8 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             className="
-            text-zinc-600
-            hover:text-black
+            text-muted-foreground
+            hover:text-foreground
             transition
             flex items-center
         "
@@ -70,14 +72,14 @@ export default function Navbar() {
           {!isPending && data?.user ? (
             <Link
               href="/dashboard"
-              className="bg-black text-white px-4 py-2 text-sm rounded-md"
+              className="bg-primary text-primary-foreground px-4 py-2 text-sm rounded-md"
             >
               Dashboard
             </Link>
           ) : (
             <Link
               href="/auth/signup"
-              className="bg-black text-white px-4 py-2 text-sm rounded-md"
+              className="bg-primary text-primary-foreground px-4 py-2 text-sm rounded-md"
             >
               Get Started
             </Link>

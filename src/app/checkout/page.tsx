@@ -35,7 +35,7 @@ export default function CheckoutPage() {
   const amount = tenure === "monthly" ? monthlyPrice : yearlyPrice;
 
   return (
-    <main className="min-h-screen bg-[#0b0b0c] text-white">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-xl mx-auto px-6 py-10">
         <CheckoutHeader />
 
@@ -43,7 +43,7 @@ export default function CheckoutPage() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Pro plan</h1>
 
-          <p className="text-zinc-400">Choose your billing cycle</p>
+          <p className="text-muted-foreground">Choose your billing cycle</p>
         </div>
 
         {/* billing options */}
