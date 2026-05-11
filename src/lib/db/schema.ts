@@ -333,3 +333,6 @@ export type PageWithLinksAndSocials = DbPage & {
 } & {
   socials: DbSocialLink[];
 };
+export type UserWithPlan = DbUser & {
+  activePlan: DbPlan | null;
+};

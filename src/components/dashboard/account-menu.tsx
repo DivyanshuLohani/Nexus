@@ -17,10 +17,12 @@ import {
   User,
   Zap,
   ChevronDown,
+  ZapIcon,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { Badge } from "../ui/badge";
 
 export function AccountDropdown() {
   const { data, isPending, error } = authClient.useSession();
@@ -64,9 +66,10 @@ export function AccountDropdown() {
             </div>
           </div>
 
-          <div className="rounded-full border px-3 py-1 text-xs font-medium">
-            Pro
-          </div>
+          <Badge>
+            {data.user.plan && <ZapIcon size={14} />}{" "}
+            {data.user.plan?.name ?? "Free"}
+          </Badge>
         </div>
 
         <DropdownMenuSeparator />

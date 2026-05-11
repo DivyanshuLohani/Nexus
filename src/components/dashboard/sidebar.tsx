@@ -5,12 +5,10 @@ import { useParams, usePathname } from "next/navigation";
 import { Home, BarChart3, Settings } from "lucide-react";
 import Image from "next/image";
 import { AccountDropdown } from "./account-menu";
-import { useTheme } from "next-themes";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const params = useParams();
-  const { theme } = useTheme();
 
   const navItems = [
     { label: "Links", href: `/dashboard/${params.slug ?? ""}`, icon: Home },
