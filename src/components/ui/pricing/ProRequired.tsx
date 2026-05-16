@@ -14,7 +14,11 @@ export default function ProRequired({
   // const showTooltip = required && !unlocked;
 
   const icon = (
-    <Crown size={16} className={!unlocked ? "text-yellow-300" : ""} />
+    <Crown
+      fill="currentColor"
+      size={16}
+      className={!unlocked ? "text-yellow-300" : ""}
+    />
   );
 
   // if (!showTooltip) {
@@ -29,7 +33,11 @@ export default function ProRequired({
         </TooltipTrigger>
 
         <TooltipContent>
-          <p>Pro plan required</p>
+          <p>
+            {unlocked
+              ? "You already have the Pro plan."
+              : "This feature requires a Pro plan."}
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
