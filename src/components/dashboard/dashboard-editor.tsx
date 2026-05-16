@@ -4,7 +4,7 @@ import { useState } from "react";
 import PageEditor from "@/components/dashboard/PageEditor";
 import LinksList from "@/components/dashboard/links-list";
 import Preview from "@/components/dashboard/preview";
-import { PageWithLinksAndSocials } from "@/lib/db/schema";
+import { DbPlan, PageWithLinksAndSocials } from "@/lib/db/schema";
 import ProfileImageUploader from "./image-uploader";
 import AppearanceEditor from "./appearance-editor";
 import SocialLinksSection from "./social-icons";
@@ -13,8 +13,9 @@ import BrandingBadgeEditor from "./branding-badge-toggle";
 interface Props {
   page: PageWithLinksAndSocials;
   username: string;
+  plan?: DbPlan;
 }
-export default function DashboardEditor({ page, username }: Props) {
+export default function DashboardEditor({ page, username, plan }: Props) {
   const [previewKey, setPreviewKey] = useState(0);
 
   const triggerPreviewRefresh = () => {
@@ -59,6 +60,7 @@ export default function DashboardEditor({ page, username }: Props) {
           enabled={page.brandingBadge ?? true}
           onChange={triggerPreviewRefresh}
           pageId={page.id}
+          unlocked={(plan && plan?.branding) ?? false}
         />
       </div>
 

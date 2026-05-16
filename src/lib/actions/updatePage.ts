@@ -4,6 +4,8 @@ import db from "@/lib/db/drizzle";
 import { IconStyle, pagesTable } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
+import { auth } from "../auth";
+import { headers } from "next/headers";
 
 export async function updatePageAction(pageId: string, subtitle: string) {
   const [updated] = await db
@@ -94,6 +96,14 @@ export async function updatePageBrandingStatusAction(
   pageId: string,
   brandingBadge: boolean,
 ) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw Error("Unauthenticated");
+  // Check plan if user can perform this action
+  if (!session.user.plan || !session.user.plan.branding)
+    throw Error("Cannot perform this action. Mission Permissions");
+
   const [page] = await db
     .update(pagesTable)
     .set({

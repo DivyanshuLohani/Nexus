@@ -1,34 +1,42 @@
 "use client";
 
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Crown } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import toast from "react-hot-toast";
 import { updatePageBrandingStatusAction } from "@/lib/actions/updatePage";
 import BrandingBadge from "../linkPage/BrandingBadge";
 import { useState } from "react";
+import ProRequired from "../ui/pricing/ProRequired";
 
 interface BrandingBadgeProps {
   enabled: boolean;
   onChange: (value: boolean) => void;
   pageId: string;
+  unlocked: boolean;
 }
 
 export default function BrandingBadgeEditor({
   enabled,
   onChange,
   pageId,
+  unlocked,
 }: BrandingBadgeProps) {
   const [badgeEnabled, setBadgeEnabled] = useState(enabled);
   const handleUpdate = (value: boolean) => {
+    const currentState = badgeEnabled;
     try {
       setBadgeEnabled(value);
       toast.promise(updatePageBrandingStatusAction(pageId, value), {
         loading: "Saving appearance...",
         success: "Appearance updated",
-        error: "Failed to update appearance",
+        error: (err) => {
+          setBadgeEnabled(currentState);
+          return err.toString() ?? "Failed to update appearance";
+        },
       });
       onChange(value);
     } catch {
+      setBadgeEnabled(currentState);
       toast.error("Update failed");
     }
   };
@@ -58,7 +66,9 @@ export default function BrandingBadgeEditor({
 
             {/* TEXT */}
             <div>
-              <p className="text-sm font-medium">Show Branding Badge</p>
+              <p className="text-sm flex gap-2 items-center font-medium">
+                Show Branding Badge <ProRequired unlocked={unlocked} />
+              </p>
 
               <p className="text-xs opacity-60 mt-1">
                 Display a small powered-by badge on your public page.
@@ -67,7 +77,11 @@ export default function BrandingBadgeEditor({
           </div>
 
           {/* SWITCH */}
-          <Switch checked={badgeEnabled} onCheckedChange={handleUpdate} />
+          <Switch
+            checked={badgeEnabled}
+            onCheckedChange={handleUpdate}
+            disabled={!unlocked}
+          />
         </div>
 
         {/* PREVIEW */}

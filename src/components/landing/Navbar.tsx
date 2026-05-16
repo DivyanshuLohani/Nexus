@@ -1,13 +1,15 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaRegSun } from "react-icons/fa";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { data, isPending } = authClient.useSession();
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,6 +71,13 @@ export default function Navbar() {
           >
             <FaGithub size={18} />
           </a>
+          <button
+            onClick={() => {
+              theme === "light" ? setTheme("dark") : setTheme("light");
+            }}
+          >
+            <FaRegSun size={18} />
+          </button>
           {!isPending && data?.user ? (
             <Link
               href="/dashboard"
