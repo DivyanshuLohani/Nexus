@@ -7,6 +7,8 @@ import { updateLinkAction } from "@/lib/actions/updateLink";
 import toast from "react-hot-toast";
 import { type DbLink } from "@/lib/db/schema";
 import { ImageUploadDialog } from "./image-upload-dialog";
+import { PlanRequiredError } from "@/lib/types/errors";
+import { usePricingDialog } from "@/providers/PremiumDialogProvider";
 
 type Link = DbLink;
 
@@ -33,6 +35,7 @@ export default function ListLinkItem({
 
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [image, setImage] = useState<string | null>(link.image ?? null);
+  const { open: openPricingDialog } = usePricingDialog();
 
   const [mounted, setMounted] = useState(false);
 
@@ -51,7 +54,7 @@ export default function ListLinkItem({
   }, [label, link.label, link.url, url, image, link.image]);
 
   const handleSave = async () => {
-    if (!label || !url || !edit) return;
+    // if (!label || !url || !edit) return;
 
     try {
       setSaving(true);
@@ -60,12 +63,20 @@ export default function ListLinkItem({
         {
           loading: "Saving...",
           success: "Saved",
-          error: "Update failed",
+          error: (e) => {
+            // console.log(typeof e);
+            if (e instanceof Error && e.name === "PlanRequiredError") {
+              openPricingDialog();
+              return;
+            }
+
+            return e.toString() ? e.toString() : "Update Failed";
+          },
         },
       );
       onUpdate(updated);
     } catch {
-      toast.error("Update failed");
+      // We don't need to handle anything here as the error is already handled
     } finally {
       setSaving(false);
     }
@@ -121,19 +132,30 @@ export default function ListLinkItem({
           placeholder="https://..."
         />
         <div className="flex mt-2">
-          {/* Image button */}
           <button
             onClick={() => setIsImageDialogOpen(true)}
             disabled={isDeleting}
-            className="
-      p-2 rounded-md border border-outline-variant
-      text-text-secondary
-      transition
-      hover:text-on-surface-variant hover:bg-surface-high
+            title={image ? "Image attached" : "Upload image"}
+            className={`
+      relative
+      p-2 rounded-md border transition
+      cursor-pointer
+      hover:bg-surface-high
       text-on-surface
-    "
+
+      ${
+        image
+          ? "border-green-500/40 bg-green-500/10 text-green-500"
+          : "border-outline-variant text-text-secondary hover:text-on-surface-variant"
+      }
+    `}
           >
             <ImageIcon size={16} />
+
+            {/* indicator dot */}
+            {image && (
+              <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-green-500 border border-background" />
+            )}
           </button>
         </div>
       </div>
@@ -148,6 +170,7 @@ export default function ListLinkItem({
       p-2 rounded-md border border-outline-variant
       text-green-500
       transition
+      cursor-pointer
       ${edit ? "opacity-100" : "opacity-0 pointer-events-none"}
       hover:bg-surface-high
       text-on-surface

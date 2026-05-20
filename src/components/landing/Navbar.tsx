@@ -4,7 +4,7 @@ import { authClient } from "@/lib/auth-client";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaGithub, FaRegSun } from "react-icons/fa";
+import { FaGithub, FaMoon, FaRegSun } from "react-icons/fa";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -75,8 +75,9 @@ export default function Navbar() {
             onClick={() => {
               theme === "light" ? setTheme("dark") : setTheme("light");
             }}
+            className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors duration-300"
           >
-            <FaRegSun size={18} />
+            {theme == "light" ? <FaMoon size={18} /> : <FaRegSun size={18} />}
           </button>
           {!isPending && data?.user ? (
             <Link

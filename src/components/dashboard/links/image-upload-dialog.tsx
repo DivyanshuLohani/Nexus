@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useCallback, useState, useRef } from "react";
-import { Upload, X, ImageIcon, Loader2 } from "lucide-react";
+import { Upload, X, ImageIcon, Loader2, SaveIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +19,7 @@ import { uploadImageAction } from "@/lib/actions/uploadImage";
 interface ImageUploadDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onImageUploaded: (url: string) => void;
+  onImageUploaded: (url: string | null) => void;
   currentImage?: string | null;
 }
 
@@ -34,6 +34,7 @@ export function ImageUploadDialog({
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasRemovedImage, setHasRemovedImage] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resetState = useCallback(() => {
@@ -73,6 +74,7 @@ export function ImageUploadDialog({
 
     setError(null);
     setSelectedFile(file);
+    setHasRemovedImage(false);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -120,6 +122,7 @@ export function ImageUploadDialog({
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
     setSelectedFile(null);
+    setHasRemovedImage(true);
     setError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -127,6 +130,11 @@ export function ImageUploadDialog({
   }, []);
 
   const handleUpload = useCallback(async () => {
+    if (hasRemovedImage) {
+      onImageUploaded(null);
+      handleOpenChange(false);
+      return;
+    }
     if (!selectedFile) return;
 
     setIsUploading(true);
@@ -248,12 +256,17 @@ export function ImageUploadDialog({
           </Button>
           <Button
             onClick={handleUpload}
-            disabled={!selectedFile || isUploading}
+            disabled={(!selectedFile || isUploading) && !hasRemovedImage}
           >
             {isUploading ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
                 Uploading...
+              </>
+            ) : hasRemovedImage ? (
+              <>
+                <SaveIcon className="size-4" />
+                Save
               </>
             ) : (
               <>

@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import { PricingDialogProvider } from "@/providers/PremiumDialogProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -66,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       images: [image],
-      creator: "@yourhandle", // 🔥 replace
+      creator: "@DivyanshuLohani", // 🔥 replace
     },
 
     icons: {
@@ -105,7 +106,6 @@ export default function RootLayout({
         <div>
           <Toaster position="top-right" />
         </div>
-
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>

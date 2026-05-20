@@ -3,8 +3,10 @@ import { auth } from "@/lib/auth";
 import { updateLink } from "@/lib/services/linkPage";
 import { headers } from "next/headers";
 import db from "../db/drizzle";
-import { linksTable } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { linksTable, pagesTable } from "../db/schema";
+import { and, eq, isNotNull } from "drizzle-orm";
+import { getLinksWithImages } from "../services/user";
+import { PlanRequiredError } from "../types/errors";
 
 export async function updateLinkAction(
   linkId: string,
@@ -18,6 +20,17 @@ export async function updateLinkAction(
 
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
+  }
+  // Check plan
+  const linksWithImages = await getLinksWithImages(session.user.id);
+  if (image != null) {
+    if (!session.user.plan) {
+      throw new PlanRequiredError("You need a plan to create image links");
+    }
+
+    if (linksWithImages.length + 1 > session.user.plan.maxLinkImages) {
+      throw new PlanRequiredError("You have reached your image link limit");
+    }
   }
 
   return await updateLink(session.user.id, linkId, label, url, image);
