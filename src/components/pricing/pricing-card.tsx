@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   yearly: boolean;
+  hasActivePlan: boolean;
 
   plan: {
     id: string;
@@ -31,7 +32,7 @@ interface Props {
   };
 }
 
-export default function PricingCard({ plan, yearly }: Props) {
+export default function PricingCard({ plan, yearly, hasActivePlan }: Props) {
   const features = [
     `${plan.maxLinks} links`,
     `${plan.maxLinkImages} image uploads`,
@@ -120,13 +121,15 @@ export default function PricingCard({ plan, yearly }: Props) {
 
       <button
         onClick={() => {
+          if (hasActivePlan) return;
           router.push(
             `/auth/signup?plan=${plan.slug}&tenure=${yearly ? "yearly" : "monthly"}`,
           );
         }}
+        disabled={hasActivePlan}
         className={`
           w-full py-3 rounded-xl font-medium transition
-          cursor-pointer
+          ${hasActivePlan ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
           ${
             plan.featured
               ? "bg-background text-foreground hover:bg-background/90"
@@ -134,7 +137,7 @@ export default function PricingCard({ plan, yearly }: Props) {
           }
         `}
       >
-        Get Started
+        {hasActivePlan ? "Plan Active" : "Get Started"}
       </button>
     </div>
   );

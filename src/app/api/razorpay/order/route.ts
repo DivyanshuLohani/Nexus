@@ -14,6 +14,20 @@ export async function POST(request: Request) {
     );
   }
 
+  // 🛡️ Block if user already has an active plan
+  const hasActivePlan = !!(
+    (session.user as any).activePlanId &&
+    (session.user as any).activePlanValidUntil &&
+    new Date((session.user as any).activePlanValidUntil) > new Date()
+  );
+
+  if (hasActivePlan) {
+    return NextResponse.json(
+      { error: "You already have an active plan." },
+      { status: 400 },
+    );
+  }
+
   const payload = await request.json();
   const planSlug = payload?.planSlug;
   const tenure = payload?.tenure;

@@ -8,9 +8,10 @@ import { DbPlan } from "@/lib/db/schema";
 
 interface Props {
   plans: DbPlan[];
+  hasActivePlan: boolean;
 }
 
-export default function PricingGridClient({ plans }: Props) {
+export default function PricingGridClient({ plans, hasActivePlan }: Props) {
   const [yearly, setYearly] = useState(false);
 
   return (
@@ -35,6 +36,7 @@ export default function PricingGridClient({ plans }: Props) {
                 : plan.monthlyPrice,
             }}
             yearly={yearly}
+            hasActivePlan={hasActivePlan}
           />
         ))}
       </div>

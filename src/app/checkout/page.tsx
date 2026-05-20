@@ -30,6 +30,17 @@ export default async function CheckoutPage({ searchParams }: Props) {
     redirect(`/auth/signup?plan=${planSlug}&tenure=${tenure}`);
   }
 
+  // 🛡️ Block if user already has an active plan
+  const hasActivePlan = !!(
+    (session.user as any).activePlanId &&
+    (session.user as any).activePlanValidUntil &&
+    new Date((session.user as any).activePlanValidUntil) > new Date()
+  );
+
+  if (hasActivePlan) {
+    redirect("/dashboard");
+  }
+
   const plan = await getPlanBySlug(planSlug);
 
   // invalid plan
