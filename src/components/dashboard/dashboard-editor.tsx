@@ -13,7 +13,7 @@ import BrandingBadgeEditor from "./branding-badge-toggle";
 interface Props {
   page: PageWithLinksAndSocials;
   username: string;
-  plan?: DbPlan;
+  plan?: DbPlan | null;
 }
 export default function DashboardEditor({ page, username, plan }: Props) {
   const [previewKey, setPreviewKey] = useState(0);
