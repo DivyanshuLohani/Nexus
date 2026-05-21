@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "../auth";
 import { headers } from "next/headers";
+import { isValidBackground } from "../background-validator";
 
 export async function updatePageAction(pageId: string, subtitle: string) {
   const [updated] = await db
@@ -77,6 +78,10 @@ export async function updatePageAppearanceAction(
   iconStyle: IconStyle,
   iconsOff: boolean = false,
 ) {
+  if (!isValidBackground(background)) {
+    throw new Error("Invalid background value");
+  }
+
   const [updated] = await db
     .update(pagesTable)
     .set({

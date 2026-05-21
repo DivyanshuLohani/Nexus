@@ -6,6 +6,9 @@ import { updatePageAppearanceAction } from "@/lib/actions/updatePage";
 import { IconStyle } from "@/lib/db/schema";
 import IconRenderer from "../linkPage/IconRenderer";
 import { useDebounce } from "@/hooks/useDebounce";
+import { isValidBackground } from "@/lib/background-validator";
+
+import { BackgroundEditorDialog } from "./background-editor-dialog";
 
 const presets = [
   "#0a0a0a",
@@ -62,6 +65,14 @@ export default function AppearanceEditor({
     setIconsOff(newIconsOff);
   };
 
+  const handleBgChange = (value: string) => {
+    if (value.toLowerCase().includes("url(") || value.toLowerCase().includes("data:")) {
+      toast.error("External images/data are not allowed");
+      return;
+    }
+    setBg(value);
+  };
+
   useEffect(() => {
     if (!mounted) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -70,8 +81,8 @@ export default function AppearanceEditor({
     }
     const payload = JSON.stringify(debouncedState);
 
-    // 🚫 prevent duplicate saves
-    if (payload === lastSaved.current) return;
+    // 🚫 prevent duplicate saves or invalid saves
+    if (payload === lastSaved.current || !isValidBackground(debouncedState.bg)) return;
 
     lastSaved.current = payload;
 
@@ -125,8 +136,9 @@ export default function AppearanceEditor({
       <div className="relative mb-4">
         <input
           value={bg}
-          onChange={(e) => setBg(e.target.value)}
+          onChange={(e) => handleBgChange(e.target.value)}
           onBlur={() => apply(bg)}
+          maxLength={200}
           className="
       w-full
       px-3 py-2 pr-28
@@ -136,22 +148,20 @@ export default function AppearanceEditor({
       outline-none
     "
           placeholder="#0a0a0a or gradient"
+          title="Only colors and linear-gradients are allowed. Images are not permitted."
         />
 
-        <a
-          href="https://cssgradient.io/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-      absolute right-2 top-1/2 -translate-y-1/2
-      text-xs
-      text-primary
-      hover:underline
-      whitespace-nowrap
-    "
-        >
-          Generate
-        </a>
+        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+          <BackgroundEditorDialog
+            initialValue={bg}
+            onApply={(val) => apply(val)}
+            trigger={
+              <button className="text-xs text-primary hover:underline whitespace-nowrap">
+                Generate
+              </button>
+            }
+          />
+        </div>
       </div>
       {/* text color */}
       <div className="flex gap-2">
