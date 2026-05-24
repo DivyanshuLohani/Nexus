@@ -17,12 +17,13 @@ import { Separator } from "@/components/ui/separator";
 export default async function AccountSettingsPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     redirect("/auth/login?next=/dashboard");
   }
+  const { slug } = await params;
 
   return (
     <main className="space-y-6 p-6 pb-20 md:pb-6">
@@ -38,7 +39,7 @@ export default async function AccountSettingsPage({
           </p>
         </div>
         <Link
-          href={`/dashboard/${params.slug}`}
+          href={`/dashboard/${slug}`}
           className="inline-flex items-center rounded-md border border-border bg-surface-low px-4 py-2 text-sm font-medium text-on-surface transition hover:bg-surface-high"
         >
           Back to dashboard
@@ -150,33 +151,6 @@ export default async function AccountSettingsPage({
                 Support
               </Button>
             </CardFooter>
-          </Card>
-
-          <Card className="border border-border">
-            <CardHeader>
-              <CardTitle>Quick actions</CardTitle>
-              <CardDescription>
-                Jump to common account tasks without leaving the dashboard.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 py-0">
-              <div className="space-y-3 rounded-3xl border border-border bg-surface-low p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm font-medium text-on-surface">
-                    Public page
-                  </p>
-                  <span className="text-sm text-muted-foreground">Live</span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Review your public page and make updates from the dashboard.
-                </p>
-              </div>
-              <Separator />
-              <div className="grid gap-2">
-                <Button variant="outline">View public page</Button>
-                <Button variant="secondary">Share feedback</Button>
-              </div>
-            </CardContent>
           </Card>
         </div>
       </div>
