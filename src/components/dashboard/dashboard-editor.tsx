@@ -4,11 +4,13 @@ import { useState } from "react";
 import PageEditor from "@/components/dashboard/PageEditor";
 import LinksList from "@/components/dashboard/links-list";
 import Preview from "@/components/dashboard/preview";
-import { DbPlan, PageWithLinksAndSocials } from "@/lib/db/schema";
+import { DbPlan, PageLayout, PageWithLinksAndSocials } from "@/lib/db/schema";
 import ProfileImageUploader from "./image-uploader";
 import AppearanceEditor from "./appearance-editor";
 import SocialLinksSection from "./social-icons";
 import BrandingBadgeEditor from "./branding-badge-toggle";
+import LayoutEditor from "./layout-editor";
+import { normalize } from "path";
 
 interface Props {
   page: PageWithLinksAndSocials;
@@ -41,11 +43,21 @@ export default function DashboardEditor({ page, username, plan }: Props) {
           links={page.socials}
           pageId={page.id}
         />
-
         <LinksList
           initialLinks={page.links}
           pageId={page.id}
           onUpdate={triggerPreviewRefresh}
+        />
+
+        <LayoutEditor
+          pageId={page.id}
+          unlockedLayouts={
+            (plan?.includedLayouts.map((l) =>
+              l.toUpperCase(),
+            ) as PageLayout[]) ?? ["STACK"]
+          }
+          value={page.layout}
+          onChange={triggerPreviewRefresh}
         />
 
         <AppearanceEditor

@@ -1,8 +1,8 @@
 "use server";
 
 import db from "@/lib/db/drizzle";
-import { IconStyle, pagesTable } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { IconStyle, PageLayout, pagesTable } from "@/lib/db/schema";
+import { eq, and } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "../auth";
 import { headers } from "next/headers";
@@ -117,6 +117,46 @@ export async function updatePageBrandingStatusAction(
     })
     .where(eq(pagesTable.id, pageId))
     .returning();
+
+  return page;
+}
+
+export async function updatePageLayoutAction(
+  pageId: string,
+  layout: PageLayout,
+) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    throw Error("Unauthenticated");
+  }
+
+  const allowedLayouts = session.user.plan?.includedLayouts ?? [];
+
+  const normalizedLayout = layout.toLowerCase();
+
+  const canUseLayout = allowedLayouts.includes(normalizedLayout);
+
+  if (!canUseLayout) {
+    throw Error("Your current plan does not include this layout");
+  }
+
+  const [page] = await db
+    .update(pagesTable)
+    .set({
+      layout,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(eq(pagesTable.userId, session.user.id), eq(pagesTable.id, pageId)),
+    )
+    .returning();
+
+  if (!page) {
+    throw Error("Page not found");
+  }
 
   return page;
 }

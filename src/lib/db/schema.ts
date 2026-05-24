@@ -111,6 +111,15 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }));
+export const pageLayoutEnum = pgEnum("page_layout", [
+  "STACK",
+  "GRID",
+  "CAROUSEL",
+  "MINIMAL",
+  "IMMERSIVE",
+]);
+
+export type PageLayout = (typeof pageLayoutEnum.enumValues)[number];
 
 // Pages table
 export const pagesTable = pgTable(
@@ -136,6 +145,7 @@ export const pagesTable = pgTable(
       .notNull(),
 
     brandingBadge: boolean("branding_badge").default(true).notNull(),
+    layout: pageLayoutEnum("layout").default("STACK").notNull(),
 
     isDefault: boolean("is_default").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
