@@ -43,7 +43,7 @@ export default function LinkCard({
       {hasImage && (
         <div className="relative aspect-video border-b border-white/10">
           <Image
-            src={link.image}
+            src={link.image ?? ""}
             alt={link.label}
             width={800}
             height={400}
