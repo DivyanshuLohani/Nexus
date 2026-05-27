@@ -1,49 +1,19 @@
-import { forwardRef } from "react";
+import * as React from "react"
 
-interface InputProps
-    extends React.InputHTMLAttributes<HTMLInputElement> {
-    label: string;
-    rightText?: string;
-    error?: string;
+import { cn } from "@/lib/utils"
+
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-2.5 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, rightText, error, ...props }, ref) => {
-        return (
-            <div>
-                <div className="flex justify-between items-center mb-1.5">
-                    <label className="text-body-sm font-medium tracking-wide uppercase text-on-surface-variant">
-                        {label}
-                    </label>
-
-                    {rightText && (
-                        <span className="text-body-sm text-tertiary cursor-pointer">
-                            {rightText}
-                        </span>
-                    )}
-                </div>
-
-                <input
-                    ref={ref}
-                    {...props}
-                    className="
-            w-full bg-transparent border-b border-outline-variant
-            py-2 px-0 text-body-md text-on-surface
-            placeholder:text-outline
-            outline-none transition-all duration-200
-            focus:border-b-2 focus:border-secondary
-          "
-                />
-
-                {error && (
-                    <p className="mt-1 text-body-sm text-error">
-                        {error}
-                    </p>
-                )}
-            </div>
-        );
-    }
-);
-
-Input.displayName = "Input";
-export default Input;
+export { Input }

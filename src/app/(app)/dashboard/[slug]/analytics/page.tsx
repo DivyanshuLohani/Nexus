@@ -2,7 +2,6 @@ import { getAnalyticsData } from "@/lib/services/analytics";
 
 import StatsCards from "@/components/analytics/StatsCard";
 import ViewsChart from "@/components/analytics/ViewsChart";
-import RecentViews from "@/components/analytics/RecentViews";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -24,11 +23,11 @@ export default async function AnalyticsPage({
     <div className="space-y-6 p-6 pb-20 md:pb-6">
       <h1 className="text-xl font-semibold">Analytics</h1>
 
-      <StatsCards stats={data.stats} />
+      <StatsCards stats={{ ...data.stats, totalClicks: 0 }} />
 
       <ViewsChart data={data.chart} />
 
-      <RecentViews views={data.recent} />
+      {/* <RecentViews views={data.recent} /> */}
     </div>
   );
 }

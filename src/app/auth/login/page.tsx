@@ -33,9 +33,16 @@ export default function LoginPage() {
           Register
         </Link>
       </div>
-
       <div className="text-center mt-6 text-body-sm text-on-surface-variant">
-        Privacy Policy · Terms of Service
+        <Link href="/privacy" className="hover:underline">
+          Privacy Policy
+        </Link>
+
+        {" · "}
+
+        <Link href="/terms" className="hover:underline">
+          Terms of Service
+        </Link>
       </div>
     </div>
   );

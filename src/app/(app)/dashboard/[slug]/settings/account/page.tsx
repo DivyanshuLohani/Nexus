@@ -11,8 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Input from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import Input from "@/components/ui/custom-input";
+import { ChangePasswordDialog } from "@/components/account/change-password";
+function formatPlanValidUntil(date: string | Date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
 
 export default async function AccountSettingsPage({
   params,
@@ -66,53 +73,15 @@ export default async function AccountSettingsPage({
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Input
-                  label="Username"
-                  value={session.user.name ?? ""}
-                  readOnly
-                />
-                <Input
                   label="Account ID"
                   value={session.user.id ?? ""}
                   readOnly
                 />
               </div>
             </CardContent>
-            <CardFooter className="justify-end">
-              <Button variant="outline">Edit profile</Button>
-            </CardFooter>
-          </Card>
-
-          <Card className="border border-border">
-            <CardHeader>
-              <CardTitle>Security</CardTitle>
-              <CardDescription>
-                Keep your account safe with a strong password and secure
-                settings.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 py-0">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-border bg-surface-low p-4">
-                  <p className="text-sm font-semibold text-on-surface">
-                    Password
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Change your password regularly to keep your account secure.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-border bg-surface-low p-4">
-                  <p className="text-sm font-semibold text-on-surface">
-                    Two-factor auth
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Protect your account with an additional authentication step.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
             <CardFooter className="justify-end gap-2">
-              <Button variant="secondary">Manage security</Button>
-              <Button>Change password</Button>
+              <ChangePasswordDialog />
+              <Button variant="outline">Edit profile</Button>
             </CardFooter>
           </Card>
         </div>
@@ -129,24 +98,15 @@ export default async function AccountSettingsPage({
               <div className="rounded-3xl border border-border bg-surface-low p-4">
                 <p className="text-sm font-medium text-on-surface">Plan</p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Pro plan · Billed monthly
-                </p>
-              </div>
-
-              <div className="space-y-3 rounded-3xl border border-border bg-surface-low p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm font-medium text-on-surface">Support</p>
-                  <span className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
-                    Fast
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Access help articles, billing support, and account recovery.
+                  {session.user.plan
+                    ? `${session.user.plan.name} • Valid until ${formatPlanValidUntil(
+                        (session.user as any).activePlanValidUntil,
+                      )}`
+                    : "Free"}{" "}
                 </p>
               </div>
             </CardContent>
             <CardFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
-              <Button className="w-full sm:w-auto">Billing</Button>
               <Button variant="outline" className="w-full sm:w-auto">
                 Support
               </Button>
